@@ -1,0 +1,117 @@
+.press-hold-info-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#red-press-info {
+  font-size: 40px;
+}
+
+#tempo-direction {
+  width: 40%;
+}
+
+#yellow-press-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+}
+
+.rhythm-value {
+  width: 70%;
+}
+
+#yellow-press-hold-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+#green-press-info {
+  display: flex;
+}
+
+.echo-text {
+  font-weight: bold;
+}
+
+#green-press-hold-info {
+  display: grid;
+  grid-template-rows: 1fr, 1fr;
+  justify-content: center;
+}
+
+.yellow-press-hold-slider-container,
+.green-press-slider-container,
+.green-press-hold-slider-container {
+  width: 90%;
+  align-items: center;
+}
+
+.yellow-press-hold-slider,
+.green-press-slider,
+.green-press-hold-slider {
+  appearance: none;
+  width: 100px;
+  height: 20px;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  outline: none;
+  overflow: hidden;
+}
+
+.yellow-press-hold-slider,
+.green-press-hold-slider {
+  background: #d3d3d3;
+}
+
+.green-press-slider {
+  background: white;
+  overflow: hidden;
+}
+
+.yellow-press-hold-slider::-webkit-slider-thumb,
+.green-press-slider::-webkit-slider-thumb,
+.green-press-hold-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 2px;
+}
+
+.yellow-press-hold-slider::-webkit-slider-thumb {
+  background-color: yellow;
+  box-shadow: -400px 0 0 390px rgb(255, 255, 130);
+}
+
+.green-press-slider::-webkit-slider-thumb {
+  background-color: rgb(0, 255, 0);
+  box-shadow: var(--box-shadow);
+}
+
+.green-press-hold-slider::-webkit-slider-thumb {
+  background-color: rgb(0, 255, 0);
+  box-shadow: -400px 0 0 390px rgb(130, 255, 130);
+}
+
+#blue-press-hold-info {
+  height: 72px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#low-voice,
+#mid-voice,
+#high-voice {
+  appearance: none;
+  background-color: rgb(0, 134, 251);
+  margin: 5px;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 50%;
+}
