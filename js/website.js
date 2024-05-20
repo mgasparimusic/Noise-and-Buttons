@@ -3,7 +3,7 @@
 //Noise and Buttons
 
 import {ClickAndHold} from '../js/button-press-class.js';
-import {tempoChooser, tempoPerciseControl, rhythmChooser, timbreChooser, timbrePerciseControl, voiceChooser, selectHarmonicLanguage, rhythmPerciseControl} from '../js/functions.js';
+import {tempoChooser, tempoPerciseControl, rhythmChooser, timbreChooser, timbrePerciseControl, voiceChooser, selectHarmonicLanguage, rhythmPerciseControl, selectScaleType} from '../js/functions.js';
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -22,6 +22,7 @@ const redButton = document.getElementById('red-button'); //Red Button in HTML
 const yellowButton = document.getElementById('yellow-button'); //Yellow Button in HTML
 const greenButton = document.getElementById('green-button'); //Green Button in HTML
 const blueButton = document.getElementById('blue-button'); //Blue Button in HTML
+const scaleType = document.getElementById('scales'); //Bue button Select Style dropdown
 
 //Data Line Variables
 let holding = false; //Check for a holding state of button
@@ -35,7 +36,7 @@ let onOffState = 0; //Initializes state of RNBO synthDevice to be off (used for 
 let muteState = 1; //Initializes state of mute to be off (used for volume)
 
 //Param Data for interfacing with RNBO params and inports
-let onOffSignal, kickVolume, tempo, straightRhythmListLow, swingRhythmListLow, straightRhythmListMid, swingRhythmListMid,straightRhythmListHigh, swingRhythmListHigh, attackValue, decayValue, feedback, wetDryMix, vibratoRate, vibratoDepth, cutoffValue, qValue, harmonyLow, harmonyMid, harmonyHigh, lowVoice, midVoice, highVoice;
+let onOffSignal, kickVolume, tempo, straightRhythmListLow, swingRhythmListLow, straightRhythmListMid, swingRhythmListMid,straightRhythmListHigh, swingRhythmListHigh, attackValue, decayValue, feedback, wetDryMix, vibratoRate, vibratoDepth, cutoffValue, qValue, harmonyLow, harmonyMid, harmonyHigh, lowVoice, midVoice, highVoice, noteIndexMax;
 
 //Synth Data to be inputted into RNBO params and inports
 let synthValues = {
@@ -84,6 +85,9 @@ function setup() {
   });
   kickVolumeSlider.addEventListener('input', function() {
     adjustKickVolume(kickVolume);
+  });
+  scaleType.addEventListener('change', function() {
+    quickClickBlue();
   });
   document.addEventListener('keydown', function(event) {
     if (event.key === 32 || event.keyCode === 32) {
@@ -187,6 +191,8 @@ function setParameters(synthDevice) {
   lowVoice = synthDevice.parametersById.get('lowVoice');
   midVoice = synthDevice.parametersById.get('midVoice');
   highVoice = synthDevice.parametersById.get('highVoice');
+  noteIndexMax = synthDevice.parametersById.get('noteIndexMax');
+  noteIndexMax.value = 12;
 }
 
 //Declares variables to inports/inlets in the RNBO patch
@@ -323,9 +329,10 @@ function quickClickBlue() {
     holding = false;
   } else {
     let harmonyValues = selectHarmonicLanguage();
-    synthValues.harmonyListLow = harmonyValues[0];
-    synthValues.harmonyListMid = harmonyValues[1];
-    synthValues.harmonyListHigh = harmonyValues[2];
+    synthValues.harmonyListLow = harmonyValues[0][0];
+    synthValues.harmonyListMid = harmonyValues[0][1];
+    synthValues.harmonyListHigh = harmonyValues[0][2];
+    noteIndexMax.value = harmonyValues[1];
     harmonyLow = new MessageEvent(TimeNow, 'in7', synthValues.harmonyListLow);
     synthDevice.scheduleEvent(harmonyLow);
     harmonyMid = new MessageEvent(TimeNow, 'in8', synthValues.harmonyListMid);

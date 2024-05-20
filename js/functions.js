@@ -4,7 +4,7 @@
 
 //Functions
 
-import {diatonic} from '../js/midiMessages.js'; //Lists with data for MIDI.
+import {allScales} from '../js/midiMessages.js'; //Lists with data for MIDI.
 import {rhythmGrid} from '../js/rhythmMessages.js'; //List with data for rhythm grids.
 
 //Random Number Generator
@@ -26,23 +26,17 @@ function convertToRNBO(message) {
 
 //Tempo Chooser
 let tempo = 50;
+let tempoList = [50, 65, 85, 115, 140];
 let tempoPeak = false;
 const redPressHoldInfo = document.getElementById('red-press-hold-info');
 
 function tempoChooser() {
   let rnd = getRandomNumber(0, 4);
-  if (rnd === 0) {
-    tempo = 50;
+  tempo = tempoList[rnd];
+  if (tempo === 50) {
     tempoPeak = false;
     redPressHoldInfo.innerHTML = `<img src="images/nab_tempo_direction_up.png" id="tempo-direction">`;
-  } else if (rnd === 1) {
-    tempo = 65;
-  } else if (rnd === 2) {
-    tempo = 85;
-  } else if (rnd === 3) {
-    tempo = 115;
-  } else if (rnd === 4) {
-    tempo = 140;
+  } else if (tempo === 140) {
     tempoPeak = true;
     redPressHoldInfo.innerHTML = `<img src="images/nab_tempo_direction_down.png" id="tempo-direction">`;
   }
@@ -276,36 +270,21 @@ function timbrePerciseControl() {
 }
 
 //Select Harmonic Language
-let randomScale = diatonic.cMajorAMinor;
+function selectScaleType() {
+  let scaleType = document.getElementById('scales').selectedIndex;
+  return scaleType;
+}
+let scaleType = selectScaleType();
+let randomScale = allScales[0][0][0];
+let noteIndexMax = allScales[0][1];
+
 function selectHarmonicLanguage() {
+  scaleType = selectScaleType();
   let rnd = getRandomNumber(1, 12);
-  if (rnd === 1) {
-    randomScale = diatonic.cMajorAMinor;
-  } else if (rnd === 2) {
-    randomScale = diatonic.dbMajorBbMinor;
-  } else if (rnd === 3) {
-    randomScale = diatonic.dMajorBMinor;
-  } else if (rnd === 4) {
-    randomScale = diatonic.ebMajorCMinor;
-  } else if (rnd === 5) {
-    randomScale = diatonic.eMajorCsMinor;
-  } else if (rnd === 6) {
-    randomScale = diatonic.fMajorDMinor;
-  } else if (rnd === 7) {
-    randomScale = diatonic.gbMajorEbMinor;
-  } else if (rnd === 8) {
-    randomScale = diatonic.gMajorEMinor;
-  } else if (rnd === 9) {
-    randomScale = diatonic.abMajorFMinor;
-  } else if (rnd === 10) {
-    randomScale = diatonic.aMajorFsMinor;
-  } else if (rnd === 11) {
-    randomScale = diatonic.bbMajorGMinor;
-  } else if (rnd === 12) {
-    randomScale = diatonic.bMajorGsMinor;
-  }
+  randomScale = allScales[scaleType][0][rnd];
+  noteIndexMax = allScales[scaleType][1];
   document.getElementById('js-random-scale').innerHTML = `${randomScale.scaleValue}`;
-  return randomScale.scale;
+  return [randomScale.scale, noteIndexMax];
 }
 
 //Voice Chooser
@@ -382,4 +361,4 @@ function voiceChooser() {
 }
 
 //Export functions to main website file
-export {tempoChooser, tempoPerciseControl, rhythmChooser, rhythmPerciseControl, timbreChooser, timbrePerciseControl, voiceChooser, selectHarmonicLanguage};
+export {tempoChooser, tempoPerciseControl, rhythmChooser, rhythmPerciseControl, timbreChooser, timbrePerciseControl, voiceChooser, selectHarmonicLanguage, selectScaleType};
