@@ -8,20 +8,28 @@ import {allScales} from '../js/midiMessages.js'; //Lists with data for MIDI.
 import {rhythmGrid} from '../js/rhythmMessages.js'; //List with data for rhythm grids.
 
 //Random Number Generator
+const history = [];
 function getRandomNumber(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
+  if (max < min) {
+    throw new Error('Max should be greater than min');
+  }
+  let randomNumber = Math.round(Math.random() * (max - min) + min);
+  if (history[0] === randomNumber) {
+    return getRandomNumber(min, max);
+  } else {
+    if (history.length != 0) {
+      history[0] = randomNumber;
+    } else {
+      history.push(randomNumber);
+    }
+    return randomNumber;
+  }
 }
 
 //Random Number Generator (between 0 and 1 float)
 function getRandomDecimal() {
   let randomDecimal = Math.random();
   return randomDecimal;
-}
-
-//Converts messages to lists
-function convertToRNBO(message) {
-  const numbers = message.split(/\s+/).map(s => parseFloat(s));
-  return numbers;
 }
 
 //Tempo Chooser

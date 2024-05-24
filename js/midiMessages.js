@@ -152,11 +152,63 @@ const bLM = {
   scaleValue: 'B Lydian/Mixolydian'
 };
 
+//Lydian-Mixolydian_______________________________________________
+const cBlues = {
+  scale: [[36, 43, 46, 48, 55, 58], [60, 63, 65, 66, 67, 70], [72, 75, 77, 78, 79, 82]],
+  scaleValue: 'C Blues'
+};
+const dbBlues = {
+  scale: [[37, 44, 47, 49, 56, 59], [61, 64, 66, 67, 68, 71], [73, 76, 78, 79, 80, 83]],
+  scaleValue: 'Db Blues'
+};
+const dBlues = {
+  scale: [[38, 45, 48, 50, 57, 60], [62, 65, 67, 68, 69, 72], [74, 77, 79, 80, 81, 84]],
+  scaleValue: 'D Blues'
+};
+const ebBlues = {
+  scale: [[39, 46, 49, 51, 58, 61], [63, 66, 68, 69, 70, 73], [75, 78, 80, 81, 82, 85]],
+  scaleValue: 'Eb Blues'
+};
+const eBlues = {
+  scale: [[40, 47, 50, 52, 59, 62], [64, 67, 69, 70, 71, 74], [76, 79, 81, 82, 83, 86]],
+  scaleValue: 'E Blues'
+};
+const fBlues = {
+  scale: [[41, 48, 51, 53, 60, 63], [65, 68, 70, 71, 72, 75], [77, 80, 82, 83, 84, 87]],
+  scaleValue: 'F Blues'
+};
+const gbBlues = {
+  scale: [[42, 49, 52, 54, 61, 64], [66, 69, 71, 72, 73, 76], [78, 81, 83, 84, 85, 88]],
+  scaleValue: 'Gb Blues'
+};
+const gBlues = {
+  scale: [[43, 50, 53, 55, 62, 65], [67, 70, 72, 73, 74, 77], [79, 82, 84, 85, 86, 89]],
+  scaleValue: 'G Blues'
+};
+const abBlues = {
+  scale: [[44, 51, 54, 56, 63, 66], [68, 71, 73, 74, 75, 78], [80, 83, 85, 86, 87, 90]],
+  scaleValue: 'Ab Blues'
+};
+const aBlues = {
+  scale: [[33, 40, 43, 45, 52, 55], [57, 60, 62, 63, 64, 67], [69, 72, 74, 75, 76, 79]],
+  scaleValue: 'A Blues'
+};
+const bbBlues = {
+  scale: [[34, 41, 44, 46, 53, 56], [58, 61, 63, 64, 65, 68], [70, 73, 75, 76, 77, 80]],
+  scaleValue: 'Bb Blues'
+};
+const bBlues = {
+  scale: [[35, 42, 45, 47, 54, 57], [59, 62, 64, 65, 66, 69], [71, 74, 76, 77, 78, 81]],
+  scaleValue: 'B Blues'
+};
+
 //All scales exported
 export const allScales = [
   [[cMajorAMinor, dbMajorBbMinor, dMajorBMinor, ebMajorCMinor, eMajorCsMinor, fMajorDMinor, gbMajorEbMinor, gMajorEMinor, abMajorFMinor, aMajorFsMinor, bbMajorGMinor, bMajorGsMinor], 12],
 
   [[cPentatonic, dbPentatonic. dPentatonic, ebPentatonic, ePentatonic, fPentatonic, gbPentatonic, gPentatonic, abPentatonic, aPentatonic, bbPentatonic, bPentatonic], 6], 
 
-  [[cLM, dbLM, dLM, ebLM, eLM, fLM, gbLM, gLM, abLM, aLM, bbLM, bLM], 12]
+  [[cLM, dbLM, dLM, ebLM, eLM, fLM, gbLM, gLM, abLM, aLM, bbLM, bLM], 12],
+
+  [[cBlues, dbBlues, dBlues, ebBlues, eBlues, fBlues, gbBlues, gBlues, abBlues, aBlues, bbBlues, bBlues], 6]
 ];
