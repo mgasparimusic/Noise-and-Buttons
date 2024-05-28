@@ -206,7 +206,7 @@ const bBlues = {
 export const allScales = [
   [[cMajorAMinor, dbMajorBbMinor, dMajorBMinor, ebMajorCMinor, eMajorCsMinor, fMajorDMinor, gbMajorEbMinor, gMajorEMinor, abMajorFMinor, aMajorFsMinor, bbMajorGMinor, bMajorGsMinor], 12],
 
-  [[cPentatonic, dbPentatonic. dPentatonic, ebPentatonic, ePentatonic, fPentatonic, gbPentatonic, gPentatonic, abPentatonic, aPentatonic, bbPentatonic, bPentatonic], 6], 
+  [[cPentatonic, dbPentatonic, dPentatonic, ebPentatonic, ePentatonic, fPentatonic, gbPentatonic, gPentatonic, abPentatonic, aPentatonic, bbPentatonic, bPentatonic], 6], 
 
   [[cLM, dbLM, dLM, ebLM, eLM, fLM, gbLM, gLM, abLM, aLM, bbLM, bLM], 12],
 

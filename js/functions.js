@@ -288,7 +288,8 @@ let noteIndexMax = allScales[0][1];
 
 function selectHarmonicLanguage() {
   scaleType = selectScaleType();
-  let rnd = getRandomNumber(1, 12);
+  let rnd = getRandomNumber(1, 12) - 1;
+  console.log(rnd);
   randomScale = allScales[scaleType][0][rnd];
   noteIndexMax = allScales[scaleType][1];
   document.getElementById('js-random-scale').innerHTML = `${randomScale.scaleValue}`;
@@ -368,5 +369,5 @@ function voiceChooser() {
   return voices;
 }
 
-//Export functions to main website file
+//Export functions to main website,js file
 export {tempoChooser, tempoPerciseControl, rhythmChooser, rhythmPerciseControl, timbreChooser, timbrePerciseControl, voiceChooser, selectHarmonicLanguage, selectScaleType};
