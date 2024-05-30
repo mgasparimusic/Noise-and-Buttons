@@ -213,8 +213,13 @@ function setInports() {
 setup();
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-redButton.addEventListener('mouseup', function() {
+let lastT
+let tDiff = 0;
+redButton.addEventListener('mouseup', function(event) {
+  if (lastT) {
+    tDiff = event.timeStamp - lastT;
+  }
+  lastT = event.timeStamp;
   quickClickRed();
   clearInterval(tempoLine);
 });
@@ -247,11 +252,12 @@ ClickAndHold.apply(blueButton,  function() {
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 //Red Quick Click
+let averageTempo = [];
 function quickClickRed() {
   if (holding) {
     holding = false;
   } else {
-    synthValues.tempo = tempoChooser();
+    synthValues.tempo = tempoChooser(tDiff);
     tempo.value = synthValues.tempo;
     document.getElementById('red-press-info').innerHTML = `${synthValues.tempo} bpm`;
   }

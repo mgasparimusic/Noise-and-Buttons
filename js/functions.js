@@ -37,18 +37,40 @@ let tempo = 50;
 let tempoList = [50, 65, 85, 115, 140];
 let tempoPeak = false;
 const redPressHoldInfo = document.getElementById('red-press-hold-info');
+let averageTempo = [];
 
-function tempoChooser() {
-  let rnd = getRandomNumber(0, 4);
-  tempo = tempoList[rnd];
-  if (tempo === 50) {
-    tempoPeak = false;
-    redPressHoldInfo.innerHTML = `<img src="images/nab_tempo_direction_up.png" id="tempo-direction">`;
-  } else if (tempo === 140) {
-    tempoPeak = true;
-    redPressHoldInfo.innerHTML = `<img src="images/nab_tempo_direction_down.png" id="tempo-direction">`;
+function tempoChooser(tDiff) {
+  function getRandomTempo() {
+    let rnd = getRandomNumber(0, 4);
+    let tempo = tempoList[rnd];
+    if (tempo === 50) {
+      tempoPeak = false;
+      redPressHoldInfo.innerHTML = `<img src="images/nab_tempo_direction_up.png" id="tempo-direction">`;
+    } else if (tempo === 140) {
+      tempoPeak = true;
+      redPressHoldInfo.innerHTML = `<img src="images/nab_tempo_direction_down.png" id="tempo-direction">`;
+    }
+    return tempo;
+  }
+  if (averageTempo.length < 3) {
+    tempo = getRandomTempo();
+    averageTempo.push(tDiff);
+  } else {
+    if (tDiff > 1200 || tDiff < 429) {
+      while (averageTempo.length > 0) {
+        averageTempo.shift();
+      }
+      tempo = getRandomTempo();
+      averageTempo.push(tDiff);
+    } else {
+      averageTempo.shift();
+      averageTempo.push(tDiff);
+      const average = Math.round(averageTempo.reduce((a, b) => a + b, 0) / averageTempo.length);
+      tempo = Math.round(60000/average);
+    }
   }
   return tempo;
+
 }
 
 let currentTempo = tempoChooser();
