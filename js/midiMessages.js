@@ -152,7 +152,7 @@ const bLM = {
   scaleValue: 'B Lydian/Mixolydian'
 };
 
-//Lydian-Mixolydian_______________________________________________
+//Blues_______________________________________________
 const cBlues = {
   scale: [[36, 43, 46, 48, 55, 58], [60, 63, 65, 66, 67, 70], [72, 75, 77, 78, 79, 82]],
   scaleValue: 'C Blues'

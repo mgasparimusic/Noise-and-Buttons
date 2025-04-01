@@ -70,7 +70,6 @@ function tempoChooser(tDiff) {
     }
   }
   return tempo;
-
 }
 
 let currentTempo = tempoChooser();

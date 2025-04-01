@@ -4,6 +4,7 @@
 
 import {ClickAndHold} from '../js/button-press-class.js';
 import {tempoChooser, tempoPerciseControl, rhythmChooser, timbreChooser, timbrePerciseControl, voiceChooser, selectHarmonicLanguage, rhythmPerciseControl, selectScaleType} from '../js/functions.js';
+//import {audioRecorder} from '../js/recorder.js';
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -15,14 +16,16 @@ let synthDevice;
 
 //Buttons in HTML
 const onOffButton = document.getElementById('js-on-off-button'); //On/Off Button in HTML
+const interfaceSelection = document.getElementById('interfaces'); //"Select Interface" Drop Down in HTML
 const mainVolumeSlider = document.getElementById('js-main-volume'); //Volume Slider in HTML
 const kickVolumeSlider = document.getElementById('js-kick-volume'); //Kick Volume Slider in HTML
 const muteButton = document.getElementById('js-mute-button'); //Mute Button in HTML
+const recButton = document.getElementById('recording-button'); //Recording Button in HTML
 const redButton = document.getElementById('red-button'); //Red Button in HTML
 const yellowButton = document.getElementById('yellow-button'); //Yellow Button in HTML
 const greenButton = document.getElementById('green-button'); //Green Button in HTML
 const blueButton = document.getElementById('blue-button'); //Blue Button in HTML
-const scaleType = document.getElementById('scales'); //Bue button Select Style dropdown
+const scaleType = document.getElementById('scales'); //Blue button Select Style dropdown
 
 //Data Line Variables
 let holding = false; //Check for a holding state of button
@@ -33,7 +36,9 @@ let voiceLine; //Data Line for harmony press and hold
 
 //On/Off and Mute State Variables
 let onOffState = 0; //Initializes state of RNBO synthDevice to be off (used for "onOffSignal" param)
+let interfaceSelectionState = 0;
 let muteState = 1; //Initializes state of mute to be off (used for volume)
+let recState = 0;
 
 //Param Data for interfacing with RNBO params and inports
 let onOffSignal, kickVolume, tempo, straightRhythmListLow, swingRhythmListLow, straightRhythmListMid, swingRhythmListMid,straightRhythmListHigh, swingRhythmListHigh, attackValue, decayValue, feedback, wetDryMix, vibratoRate, vibratoDepth, cutoffValue, qValue, harmonyLow, harmonyMid, harmonyHigh, lowVoice, midVoice, highVoice, noteIndexMax;
@@ -77,8 +82,14 @@ function setup() {
   onOffButton.addEventListener('click', function() {
     onOffSynth();
   });
+  interfaceSelection.addEventListener('click', function() {
+    interfaceSelectionSynth();
+  });
   muteButton.addEventListener('click', function() {
     muteSynth();
+  });
+  recButton.addEventListener('click', function() {
+    recSynth();
   });
   mainVolumeSlider.addEventListener('input', function() {
     adjustVolume(gain);
@@ -142,12 +153,16 @@ function onOffSynth() {
   if (onOffState === 0) {
       onOffState = 1;
       onOffSignal.value = onOffState;
-      onOffButton.textContent = 'On'
+      onOffButton.textContent = 'On';
   } else if (onOffState === 1) {
       onOffState = 0;
       onOffSignal.value = onOffState;
-      onOffButton.textContent = 'Off'
+      onOffButton.textContent = 'Off';
   }
+}
+
+function interfaceSelectionSynth() {
+  console.log(interfaceSelectionState);
 }
 
 function muteSynth() {
@@ -157,13 +172,26 @@ function muteSynth() {
       adjustVolume(gain);
     });
     gain.gain.value = 0;
-    muteButton.textContent = 'Unmute'
+    muteButton.textContent = 'Unmute';
   } else if (muteState === 0) {
     muteState = 1;
     mainVolumeSlider.addEventListener('input', function() {
       adjustVolume(gain);
     });
-    muteButton.textContent = 'Mute'
+    muteButton.textContent = 'Mute';
+  }
+}
+
+function recSynth() {
+  if (recState === 0) {
+    recState = 1;
+    recButton.textContent = 'Stop';
+    recButton.style.background = 'red';
+  } else {
+    recState = 0;
+    confirm('Do you want to save your audio? (DEMO still under construction...');
+    recButton.textContent = 'Record';
+    recButton.style.background = 'lightgray';
   }
 }
 
