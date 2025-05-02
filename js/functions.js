@@ -197,7 +197,7 @@ const attackVisual = document.getElementById('js-attack-time');
 const decayVisual = document.getElementById('js-decay-time');
 const attackSpeed = document.getElementById('js-attack-speed');
 const decaySpeed = document.getElementById('js-decay-speed');
-let turn = false;
+let turn = true;
 
 function rhythmPerciseControl() {
   if (!turn && !attackPeak && attackValue < 100) {
@@ -213,18 +213,18 @@ function rhythmPerciseControl() {
       attackPeak = false;
       turn = true;
     }
-  } else if (turn && !decayPeak && decayValue < 200) {
+  } else if (turn && !decayPeak && decayValue < 100) {
     decayValue += 2;
     decayVisual.value = decayValue;
-    if (decayValue >= 200) {
+    if (decayValue >= 100) {
       decayPeak = true;
+      turn = false;
     }
-  } else if (turn && decayPeak && decayValue > 100) {
+  } else if (turn && decayPeak && decayValue > 2) {
     decayValue -= 2;
     decayVisual.value = decayValue;
-    if (decayValue <= 100) {
+    if (decayValue <= 2) {
       decayPeak = false;
-      turn = false;
     }
   }
   if (attackValue >= 50) {
@@ -232,7 +232,7 @@ function rhythmPerciseControl() {
   } else {
     attackSpeed.textContent = 'Fast';
   }
-  if (decayValue >= 150) {
+  if (decayValue >= 50) {
     decaySpeed.textContent = 'Slow';
   } else {
     decaySpeed.textContent = 'Fast';

@@ -1,0 +1,59 @@
+.app-description-text {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.red-text {
+  color: rgb(164, 0, 0);
+  font-weight: bold;
+}
+
+.yellow-text {
+  color: rgb(141, 141, 0);
+  font-weight: bold;
+}
+
+.green-text {
+  color: green;
+  font-weight: bold;
+}
+
+.blue-text {
+  color: rgb(0, 0, 130);
+  font-weight: bold;
+}
+
+.play-button {
+  flex: 1fr;
+  font-size: 30px;
+  font-weight: bold;
+  border-style: none;
+  border-radius: 3px;
+  background-color: lightgray;
+  text-decoration: none;
+  color: black;
+}
+
+.play-button-text {
+  margin: 10px 20px;
+}
+
+.play-button:hover {
+  background-color: gray;
+  cursor: pointer;
+}
+
+.control-instruct-panel {
+  background-color: black;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+  border-radius: 20px;
+}
+
+.buttons-instruct-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

@@ -1,0 +1,36 @@
+.description {
+  text-align: center;
+  color: white;
+}
+.main-selector-container {
+  background-color: white;
+  padding-top: 20px;
+  padding-bottom: 50px;
+  border-radius: 50px;
+}
+
+.main-selector {
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.lesson-1, .lesson-2, .lesson-3, .lesson-4 {
+  margin: 10px;
+  padding: 5px;
+}
+.lesson-1:hover, .lesson-2:hover, .lesson-3:hover, .lesson-4:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+.label {
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+}
+
+img {
+  width: 100%;
+}

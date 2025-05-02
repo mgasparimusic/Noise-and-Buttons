@@ -4,23 +4,25 @@
 
 import {ClickAndHold} from '../js/button-press-class.js';
 import {tempoChooser, tempoPerciseControl, rhythmChooser, timbreChooser, timbrePerciseControl, voiceChooser, selectHarmonicLanguage, rhythmPerciseControl, selectScaleType} from '../js/functions.js';
-//import {audioRecorder} from '../js/recorder.js';
+//Record Audio Directly From Source Audio Resource: https://stackoverflow.com/questions/49141817/how-to-record-directly-from-a-webpage-using-javascript
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 //JS Audio Context Declaration 
-let audioContext;
+let audio;
 let buffer;
 let gain;
 let synthDevice;
 
 //Buttons in HTML
+const recordingDialog = document.getElementById('recording-dialog') //Dialog that will show current recording in HTML
 const onOffButton = document.getElementById('js-on-off-button'); //On/Off Button in HTML
 const interfaceSelection = document.getElementById('interfaces'); //"Select Interface" Drop Down in HTML
 const mainVolumeSlider = document.getElementById('js-main-volume'); //Volume Slider in HTML
 const kickVolumeSlider = document.getElementById('js-kick-volume'); //Kick Volume Slider in HTML
 const muteButton = document.getElementById('js-mute-button'); //Mute Button in HTML
 const recButton = document.getElementById('recording-button'); //Recording Button in HTML
+const recording = document.getElementById('audio'); //Recording Playback in HTML
 const redButton = document.getElementById('red-button'); //Red Button in HTML
 const yellowButton = document.getElementById('yellow-button'); //Yellow Button in HTML
 const greenButton = document.getElementById('green-button'); //Green Button in HTML
@@ -38,7 +40,6 @@ let voiceLine; //Data Line for harmony press and hold
 let onOffState = 0; //Initializes state of RNBO synthDevice to be off (used for "onOffSignal" param)
 let interfaceSelectionState = 0;
 let muteState = 1; //Initializes state of mute to be off (used for volume)
-let recState = 0;
 
 //Param Data for interfacing with RNBO params and inports
 let onOffSignal, kickVolume, tempo, straightRhythmListLow, swingRhythmListLow, straightRhythmListMid, swingRhythmListMid,straightRhythmListHigh, swingRhythmListHigh, attackValue, decayValue, feedback, wetDryMix, vibratoRate, vibratoDepth, cutoffValue, qValue, harmonyLow, harmonyMid, harmonyHigh, lowVoice, midVoice, highVoice, noteIndexMax;
@@ -68,15 +69,52 @@ let synthValues = {
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 function setup() {
-  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const audioContext = {
+    aCtx: new (window.AudioContext)(),
+    record: function record(e) {
+      const btn = recButton;
+    	let chunks = [];
+    	// init a new MediaRecorder with our StreamNode's stream
+    	const recorder = new MediaRecorder(audioContext.streamNode.stream);
+    	// save every chunks
+    	recorder.ondataavailable = e => chunks.push(e.data);
+    	// once we're done recording
+    	recorder.onstop = e => {
+        recording.replaceChildren();
+    		// export our recording
+    		const blob = new Blob(chunks, {'type': 'audio/mpeg;'});
+        chunks = [];
+    		const url = URL.createObjectURL(blob);
+    		// here in an <audio> element
+    		const a = new Audio(url);
+        a.controls = true;
+    		recording.appendChild(a);
+    		// reset default click handler
+    		btn.onclick = audioContext.record;
+        btn.textContent = 'Record';
+        recordingDialog.showModal();
+    	}
+    	btn.onclick = function () {
+    		recorder.stop();
+    	};
+    	// start recording
+    	recorder.start();
+      btn.textContent = 'Stop';
+    }
+  };
+  audio = audioContext.aCtx;
   buffer = 'kick';
-  gain = audioContext.createGain();
+  gain = audio.createGain();
+  audioContext.streamNode = audio.createMediaStreamDestination();
+  gain.connect(audioContext.streamNode);
+  document.getElementById('recording-button').onclick = audioContext.record;
+  
 
   loadRNBO(); //Sets up RNBO patch connection ->
 
   //Audio will be active once body of HTML is clicked.
   document.body.onclick = () => {
-      audioContext.resume();
+      audio.resume();
   }
   
   onOffButton.addEventListener('click', function() {
@@ -87,9 +125,6 @@ function setup() {
   });
   muteButton.addEventListener('click', function() {
     muteSynth();
-  });
-  recButton.addEventListener('click', function() {
-    recSynth();
   });
   mainVolumeSlider.addEventListener('input', function() {
     adjustVolume(gain);
@@ -109,22 +144,22 @@ function setup() {
 
 async function loadRNBO() {
   const { createDevice } = RNBO;
-  await audioContext.resume();
+  await audio.resume();
 
   const rawPatcher = await fetch('export/patch.export.json');
   const synthPatcher = await rawPatcher.json();
 
-  synthDevice = await createDevice({ context: audioContext, patcher: synthPatcher });
+  synthDevice = await createDevice({ context: audio, patcher: synthPatcher });
 
   const fileResponse = await fetch('export/media/MMG_Kick-11.wav');
   const arrayBuf = await fileResponse.arrayBuffer();
 
-  const audioBuf = await audioContext.decodeAudioData(arrayBuf);
+  const audioBuf = await audio.decodeAudioData(arrayBuf);
 
   await synthDevice.setDataBuffer(buffer, audioBuf);
   //Connecting device to audio.
   synthDevice.node.connect(gain);
-  gain.connect(audioContext.destination);
+  gain.connect(audio.destination);
 
   gain.gain.value = 0;
 
@@ -179,19 +214,6 @@ function muteSynth() {
       adjustVolume(gain);
     });
     muteButton.textContent = 'Mute';
-  }
-}
-
-function recSynth() {
-  if (recState === 0) {
-    recState = 1;
-    recButton.textContent = 'Stop';
-    recButton.style.background = 'red';
-  } else {
-    recState = 0;
-    confirm('Do you want to save your audio? (DEMO still under construction...');
-    recButton.textContent = 'Record';
-    recButton.style.background = 'lightgray';
   }
 }
 

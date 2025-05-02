@@ -1,0 +1,80 @@
+.app-index-text {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.welcome-text {
+  text-align: center;
+  font-size: 40px;
+}
+
+.welcome-grid-one {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.welcome-buttons {
+  margin: 5%;
+  border-style: none;
+  border-radius: 50px;
+  color: white;
+  font-size: 50px;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-button-text {
+  margin: 0;
+}
+
+.welcome-red {
+  background-color: darkred;
+  box-shadow: 70px 0px darkred;
+}
+
+.welcome-red:hover {
+  background-color: red;
+  cursor: pointer;
+}
+
+.welcome-yellow:hover {
+  background-color: gold;
+  cursor: pointer;
+}
+
+.welcome-green:hover {
+  background-color: green;
+  cursor: pointer;
+}
+
+.welcome-blue:hover {
+  background-color: blue;
+  cursor: pointer;
+}
+
+.welcome-yellow {
+  background-color: darkgoldenrod;
+  box-shadow: -70px 0px darkgoldenrod;
+}
+
+.welcome-green {
+  background-color: darkgreen;
+  box-shadow: 70px 0px darkgreen;
+}
+
+.welcome-blue {
+  background-color: darkblue;
+  box-shadow: -70px 0px darkblue;
+}
+
+.nav-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+#nab-icon {
+  max-width: 100%;
+  max-height: auto;
+}
