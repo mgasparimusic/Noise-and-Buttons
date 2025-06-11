@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="styles/nav.css">
     <link rel="stylesheet" href="styles/play.css">
     <link rel="stylesheet" href="styles/info-panel.css">
+    <link rel="stylesheet" href="styles/controllers.css">
   </head>
 
   <body>
@@ -60,7 +61,8 @@
         </div>
         <div class="app-start-stop shadow">
           <ul class="start-stop-ul">
-            <li class="h2-list"><h2>Start/Stop</h2></li>
+            <li class="h2-list"><h2 id="start-stop-text">Start/Stop</h2></li>
+            <li><p class="general-description" id="js-start-stop-description">Press spacebar or click on/off button to start/stop.</p></li>
             <li><button id="js-on-off-button" class="main-buttons start-stop">Off</button></li>
           </ul>
         </div>
@@ -72,7 +74,7 @@
               <button id="js-reset-button" class="main-buttons">Reset</button>
             </div></li>
             <li class="h2-list"><h2 id="recording-text">Recording</h2></li>
-            <li><p class="recording-description">Record an audio file and save it to your computer.</p></li>
+            <li><p class="general-description">Record an audio file and save it to your computer.</p></li>
             <li><button id="recording-button" class="main-buttons">Record</button></li>
           </ul>
         </div>
@@ -80,23 +82,31 @@
       <!-- Info Panel -->
       <section class="info-panel shadow">
         <div class="button-numbers">
-          <label class="number">1</label>
-          <label class="number">2</label>
-          <label class="number">3</label>
-          <label class="number">4</label>
+          <div style="text-align: center;">
+            <label class="number number-red">Tempo</label><label class="number number-border number-red">1</label>
+          </div>
+          <div style="text-align: center;">
+            <label class="number number-yellow">Rhythm</label><label class="number number-border number-yellow">2</label>
+          </div>
+          <div style="text-align: center;">
+            <label class="number number-green">Timbre</label><label class="number number-border number-green">3</label>
+          </div>
+          <div style="text-align: center;">
+            <label class="number number-blue">Harmony</label><label class="number number-border number-blue">4</label>
+          </div>
         </div>
         <div class="info-panel-grid">
           <div class="info-panel-grid-item" id="press-info">
             <div class="press-info-container">
               <div id="red-press-info">50 bpm</div>
               <div id="yellow-press-info">
-                <div id="js-rhythm-value-low">
+                <div id="js-rhythm-value-low" class="rhythm-value-container">
                   <img class="rhythm-value" src="images/nab_rhythm_quarter_note.png">
                 </div>
-                <div id="js-rhythm-value-mid">
+                <div id="js-rhythm-value-mid" class="rhythm-value-container">
                   <img class="rhythm-value" src="images/nab_rhythm_quarter_note.png">
                 </div>
-                <div id="js-rhythm-value-high">
+                <div id="js-rhythm-value-high" class="rhythm-value-container">
                   <img class="rhythm-value" src="images/nab_rhythm_quarter_note.png">
                 </div>
               </div>
@@ -104,6 +114,10 @@
                 <div class="green-press-slider-container">
                   <p class="panel-text">Echo</p>
                   <input type="range" min="0" max="0.7" value="0" step="0.1" id="js-delay" class="green-press-slider" disabled>
+                </div>
+                <div class="green-press-slider-container">
+                  <p class="panel-text">Wobble</p>
+                  <input type="range" min="0" max="14" value="0" step="1" id="js-vibrato" class="green-press-slider" disabled>
                 </div>
               </div>
               <div id="blue-press-info">
@@ -144,7 +158,7 @@
                   <input type="range" min="1000" max="5000" value="1000" id="js-cutoff-value" class="green-press-hold-slider" disabled>
                 </div>
                 <div class="green-press-hold-slider-container">
-                  <input type="range" step="0.1" min="0.2" max="2.2" value="0.2" id="js-q-value" class="green-press-hold-slider" disabled>
+                  <input type="range" step="0.1" min="0.0" max="1.0" value="0.0" id="js-q-value" class="green-press-hold-slider" disabled>
                 </div>
               </div>
               <div id="blue-press-hold-info">
@@ -155,28 +169,83 @@
             </div>
           </div>
         </div>
-      <!-- Buttons Panel -->
       </section>
-      <section class="buttons-panel shadow">
-        <button class="button" id="red-button">
-          <img class="button-image" src="images/nab_button_red_off.png">
-        </button>
-        <button class="button" id="yellow-button">
-          <img class="button-image" src="images/nab_button_yellow_off.png">
-        </button>
-        <button class="button" id="green-button">
-          <img class="button-image" src="images/nab_button_green_off.png">
-        </button>
-        <button class="button" id="blue-button">
-          <img class="button-image" src="images/nab_button_blue_off.png">
-        </button>
+      <!-- Controllers Panel -->
+      <section id="wood-texture" class="controllers-panel shadow">
+        <!-- Buttons View (Active on Load)-->
+        <div id="buttons-view">
+          <div class="buttons-container">
+            <button class="button" id="red-button">
+              <img type="image" class="button-image" id="red-button-image" src="images/nab_button_red_off.png">
+            </button>
+            <button class="button" id="yellow-button">
+              <img type="image" class="button-image" id="yellow-button-image" src="images/nab_button_yellow_off.png">
+            </button>
+            <button class="button" id="green-button">
+              <img type="image" class="button-image" id="green-button-image" src="images/nab_button_green_off.png">
+            </button>
+            <button class="button" id="blue-button">
+              <img type="image" class="button-image" id="blue-button-image" src="images/nab_button_blue_off.png">
+            </button>
+          </div>
+        </div>
+        <!-- Game Controller View (Hidden on Load) -->
+        <div id="game-controller-view">
+          <div id="controller-not-connected-area" class="controller-status">
+            <div class="loader"></div>
+            <div>Controller Not Connected...</div>
+          </div>
+          <div id="controller-connected-area">
+            <img type="image" class="controller-view-geo" src="images/nab_controller_view_geo.png">
+            <img type="image" class="scale-wheel" src="images/nab_scale_wheel_diatonic.png">
+            <div class="controller-connected-container">
+              <div id="controller-connected" class="controller-status">Connected</div>
+              <div class="controller-buttons">
+                <div class="controller-buttons-flex" id="controller-red">
+                  <img type="image" class="joystick-direction" src="images/nab_tempo_direction_up.png">
+                  <div id="joystick-wrapper-red"></div>
+                  <img type="image" class="joystick-direction" style="transform: rotate(180deg);"src="images/nab_tempo_direction_up.png">
+                </div>
+                <div class="controller-buttons-flex" id="controller-yellow">
+                  <div class="d-pad-layout">
+                    <img type="image" id="controller-button-12" class="d-pad-button up" src="images/nab_tempo_direction_up.png">
+                    <img type="image" id="controller-button-14" class="d-pad-button left" src="images/nab_tempo_direction_up.png">
+                    <img type="image" style="background-color: yellow;" class="d-pad-middle middle" src="images/nab_note_logo_corners.png">
+                    <img type="image" id="controller-button-15" class="d-pad-button right" src="images/nab_tempo_direction_up.png">
+                    <img type="image" id="controller-button-13" class="d-pad-button down" src="images/nab_tempo_direction_up.png">
+                  </div>
+                  <div id="controller-button-4" class="controller-bumper"></div>
+                  <div id="controller-button-6" class="controller-trigger"></div>
+                </div>
+                <div class="controller-buttons-flex" id="controller-green">
+                  <div class="button-pad-layout">
+                    <img type="image" id="controller-button-3" class="button-pad-button x-button" src="images/nab_controller_x.png">
+                    <img type="image" id="controller-button-2" class="button-pad-button y-button" src="images/nab_controller_y.png">
+                    <img type="image" id="controller-button-1" class="button-pad-button a-button" src="images/nab_controller_a.png">
+                    <img type="image" id="controller-button-0" class="button-pad-button b-button" src="images/nab_controller_b.png">
+                  </div>
+                  <div id="controller-button-5" class="controller-bumper"></div>
+                  <div id="controller-button-7" class="controller-trigger"></div>
+                </div>
+                <div class="controller-buttons-flex" id="controller-blue">
+                  <div class="plus-minus-row">
+                    <div id="controller-button-8" class="plus-minus-button">-</div>
+                    <div id="controller-button-9" class="plus-minus-button">+</div>
+                  </div>
+                  <div id="joystick-wrapper-blue"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
 
     <!-- JS -->
+    <script>
+    </script>
     <script type="text/javascript" src="https://cdn.cycling74.com/rnbo/latest/rnbo.min.js"></script>
     <script type="module" src="js/functions.js"></script>
-    <script type="module" src="js/button-press-class.js"></script>
     <script type="module" src="js/website.js"></script>
     <script type="module" src="js/midiMessages.js"></script>
     <script type="module" src="js/stopwatch.js"></script>

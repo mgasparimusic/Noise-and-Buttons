@@ -1,0 +1,247 @@
+.controller-status {
+  font-weight: bold;
+  text-align: center;
+}
+
+#controller-not-connected-area {
+  margin-top: 20px;
+  color: darkred;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  display: block;
+}
+
+.loader {
+  display: inline-block;
+  border: 8px solid red;
+  border-radius: 50%;
+  border-right: 8px solid yellow;
+  border-bottom: 8px solid green;
+  border-left: 8px solid blue;
+  width: 20px;
+  height: 20px;
+  -webkit-animation: spin 1.5s linear infinite;
+  animation: spin 1.5s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#controller-connected-area {
+  height: 100%;
+  display: none;
+}
+
+.scale-wheel {
+  position: absolute;
+  z-index: 2;
+  width: 900px;
+}
+
+.controller-view-geo {
+  position: absolute;
+  z-index: 3;
+  width: 900px;
+}
+
+.controller-connected-container {
+  position:relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  height: 88%;
+  padding: 15px;
+}
+
+#controller-connected {
+  flex: 10%;
+  color: green;
+}
+
+.controller-buttons {
+  flex: 90%;
+  display: flex;
+}
+
+.controller-buttons-flex {
+  flex: 1;
+}
+
+#controller-red {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#controller-yellow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#controller-green {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#controller-blue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#joystick-wrapper-red, #joystick-wrapper-blue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid black;
+  border-radius: 100%;
+  width: 75px;
+  height: 75px;
+}
+
+#joystick-wrapper-red {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+#joystick-wrapper-blue {
+  background-color: rgba(0, 0, 255, 0.5);
+  margin-top: 15px;
+}
+
+#joystick-red, #joystick-blue {
+  border-radius: 100%;
+  height: 100%;
+  user-select: none;
+  width: 100%;
+}
+
+#joystick-red {
+  background-color: rgba(255, 0, 0, 0.5);
+  width: 75%;
+  height: 75%;
+}
+
+#joystick-blue {
+  background-color: rgba(0, 0, 255, 0.5);
+  width: 75%;
+  height: 75%;
+}
+
+.joystick-direction {
+  width: 30%;
+  height: 22%;
+}
+
+.d-pad-layout, .button-pad-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  width: 90px;
+  height: 90px;
+  align-content: center;
+  align-items: center;
+  padding-bottom: 5px;
+  border-bottom: 3px solid black;
+}
+
+.d-pad-button {
+  padding: 2px;
+  border: 3px solid black;
+  width: 20px;
+  height: 23px;
+}
+
+.button-pad-button {
+  padding: 2px;
+  border: 3px solid black;
+  width: 20px;
+  height: 20px;
+}
+
+.d-pad-middle {
+  width: 30px;
+  height: 30px;
+}
+
+.up {border-radius: 100% 100% 0% 0%; border-bottom: none; grid-row-start: 1; grid-column-start: 2;} .down {transform: rotate(180deg); border-radius: 100% 100% 0% 0%; border-bottom: none; grid-row-start: 3; grid-column-start: 2;} .left {transform: rotate(270deg); border-radius: 100% 100% 0% 0%; border-bottom: none; grid-row-start: 2; grid-column-start: 1;} .right {transform: rotate(90deg); border-radius: 100% 100% 0% 0%; border-bottom: none; grid-row-start: 2; grid-column-start: 3;} .middle {grid-row-start: 2; grid-column-start: 2;}
+
+.x-button {border-radius: 100%; grid-row-start: 1; grid-column-start: 2;} .b-button {border-radius: 100%; grid-row-start: 3; grid-column-start: 2;} .y-button {border-radius: 100%; grid-row-start: 2; grid-column-start: 1;} .a-button {border-radius: 100%; grid-row-start: 2; grid-column-start: 3;}
+
+.controller-bumper {
+  width: 40px;
+  height: 5px;
+  margin: 8px 8px 0px 8px;
+  padding: 5px;
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
+  border-radius: 5px;
+}
+
+.controller-trigger {
+  width: 40px;
+  height: 15px;
+  margin: 8px 8px 0px 8px;
+  padding: 5px;
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
+  border-radius: 5px 5px 20px 20px;
+}
+
+.plus-minus-row {
+  width: 100px;
+  height: 70px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+}
+
+.controller-button-value {
+  text-align: center;
+  margin: 0px;
+  padding: 10px;
+}
+
+#controller-button-4, #controller-button-6, #controller-button-12, #controller-button-13, #controller-button-14, #controller-button-15 {
+  background-color: yellow;
+}
+
+#controller-button-0, #controller-button-1, #controller-button-2, #controller-button-3, #controller-button-5, #controller-button-7 {
+  background-color: green;
+  color: white;
+}
+
+#controller-button-8, #controller-button-9, #controller-button-11 {
+  background-color: rgb(0, 0, 255);
+  color: white;
+}
+
+.plus-minus-button {
+  text-align: center;
+  width: 22px;
+  height: 22px;
+  border: 3px solid black;
+  border-radius: 100%;
+}
+
+#controller-button-8 {
+  grid-column-start: 1;
+}
+
+#controller-button-9 {
+  grid-column-start: 3;
+}

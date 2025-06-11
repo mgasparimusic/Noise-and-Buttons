@@ -30,6 +30,10 @@
   align-items: start;
 }
 
+.rhythm-value-container {
+  border-radius: 20px;
+}
+
 .rhythm-value {
   width: 70%;
 }
@@ -40,7 +44,7 @@
 }
 
 #green-press-info {
-  display: flex;
+  display: grid;
 }
 
 .panel-text {
@@ -60,7 +64,6 @@
 .yellow-press-hold-slider-container,
 .green-press-slider-container,
 .green-press-hold-slider-container {
-  width: 90%;
   align-items: center;
 }
 

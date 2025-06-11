@@ -37,48 +37,123 @@
           <p class="app-description-text">Depending on what controls you choose to use, the app will function differently.  Click on the name of your control device below to expand detailed instructions on how to control the app with that desired control scheme.</p>
           <br>
           <div class="control-instruct-panel">
-            <h2>Buttons:</h2>
-            <p class="app-description-text">Controlling the <b>Noise and Buttons</b> app with the button controller is easy.  There are four color-coded buttons that each control one of the four aspects of music.  What you will notice is that simple button clicks will result in random musical changes, while holding down the buttons will unlock more specific and controlled changes to the music.  Below are detailed descriptions on how to control the app with just these four buttons:</p>
-            <div class="buttons-instruct-panel">
-              <div style="padding: 5px;">
-                <h2 style="color: lightsalmon">Red Button</h2>
-                <p class="app-description-text" style="color: lightsalmon">The red button controls the speed of the music, which can be defined as <u>tempo</u>.</p>
-                <p class="app-description-text" style="color: lightsalmon"><b>Quick Press</b></p>
-                <p class="app-description-text" style="color: lightsalmon">A quick press will result in random tempo between 50-140bpm (beats-per-minute).</p>
-                <p class="app-description-text" style="color: lightsalmon"><b>Press-and-Hold</b></p>
-                <p class="app-description-text" style="color: lightsalmon">A press-and-hold will increase the tempo slowly until it reaches the max of 140bpm, where it will reverse and decrease until hitting the minimum of 50bpm, where it will increase again.  This will continue forever as long as the button is pressed down.  It will stop at the current tempo number once the button is released.</p>
+            <div class="interface-header"><h2>Buttons:</h2><button id="buttons-instruct-expand">+</button></div>
+            <div id="buttons-instruct">
+              <p class="app-description-text">Controlling the <b>Noise and Buttons</b> app with the button controller is easy.  There are four color-coded buttons that each control one of the four aspects of music.  What you will notice is that simple button clicks will result in random musical changes, while holding down the buttons will unlock more specific and controlled changes to the music.  Below are detailed descriptions on how to control the app with just these four buttons:</p>
+              <div class="buttons-instruct-panel">
+                <div style="padding: 5px;">
+                  <h2 style="color: lightsalmon">Red Button</h2>
+                  <p class="app-description-text" style="color: lightsalmon">The red button controls the speed of the music, which can be defined as <u>tempo</u>.</p>
+                  <p class="app-description-text" style="color: lightsalmon"><b>Quick Press</b></p>
+                  <p class="app-description-text" style="color: lightsalmon">A quick press will result in random tempo between 50-140bpm (beats-per-minute).</p>
+                  <p class="app-description-text" style="color: lightsalmon"><b>Press-and-Hold</b></p>
+                  <p class="app-description-text" style="color: lightsalmon">A press-and-hold will increase the tempo slowly until it reaches the max of 140bpm, where it will reverse and decrease until hitting the minimum of 50bpm, where it will increase again.  This will continue forever as long as the button is pressed down.  It will stop at the current tempo number once the button is released.</p>
+                </div>
+                <div style="padding: 5px;">
+                  <h2 style="color: lightgoldenrodyellow">Yellow Button</h2>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow">The yellow button controls how each beat is divided among the three voices of the app.  This can be defined as <u>rhythm</u>.</p>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow"><b>Quick Press</b></p>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow">A quick press will result in random rhythmic divisions for each voice.  This can create some interesting rhythmic patterns</p>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow"><b>Press-and-Hold</b></p>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow">A press-and-hold will affect the articulation of each note that is produced.  The attack and the decay of each note will increase and decrease, moving from a very pointed sound to a more smooth sound and vise-versa.</p>
+                </div>
+                <div style="padding: 5px;">
+                  <h2 style="color: lightgreen">Green Button</h2>
+                  <p class="app-description-text" style="color: lightgreen">The green button controls the <u>timbre</u> of the entire sound.  Timbre is best defined as the character or quality of a musical sound.</p>
+                  <p class="app-description-text" style="color: lightgreen"><b>Quick Press</b></p>
+                  <p class="app-description-text" style="color: lightgreen">A quick press will result in random changes to some fun audio effects like echo and vibrato (which can make the sound feel silly and unstable)</p>
+                  <p class="app-description-text" style="color: lightgreen"><b>Press-and-Hold</b></p>
+                  <p class="app-description-text" style="color: lightgreen">A press-and-hold will adjust the overall intensity of the sound by making it brighter and darker.  The movement of this change works similarly to the red button's tempo change</p>
+                </div>
+                <div style="padding: 5px;">
+                  <h2 style="color: lightblue">Blue Button</h2>
+                  <p class="app-description-text" style="color: lightblue">The blue button controls what notes out of specific scales of notes will randomly play when the app is on.  Harmony is all about combinations of similar notes played together to produce pleasing (or unpleasing) sounds</p>
+                  <p class="app-description-text" style="color: lightblue"><b>Quick Press</b></p>
+                  <p class="app-description-text" style="color: lightblue">A quick press will result in a random scale to be selected from a specific category of scales which you can select with the drop-down list above the blue button interface.</p>
+                  <p class="app-description-text" style="color: lightblue"><b>Press-and-Hold</b></p>
+                  <p class="app-description-text" style="color: lightblue">A press-and-hold will turn on and off voices.  There is a pattern that the app will follow when turning on and off voices.  It will cycle through different combinations of voices, until it ultimately reaches all three voices being on.</p>
+                </div>
               </div>
-              <div style="padding: 5px;">
-                <h2 style="color: lightgoldenrodyellow">Yellow Button</h2>
-                <p class="app-description-text" style="color: lightgoldenrodyellow">The yellow button controls how each beat is divided among the three voices of the app.  This can be defined as <u>rhythm</u>.</p>
-                <p class="app-description-text" style="color: lightgoldenrodyellow"><b>Quick Press</b></p>
-                <p class="app-description-text" style="color: lightgoldenrodyellow">A quick press will result in random rhythmic divisions for each voice.  This can create some interesting rhythmic patterns</p>
-                <p class="app-description-text" style="color: lightgoldenrodyellow"><b>Press-and-Hold</b></p>
-                <p class="app-description-text" style="color: lightgoldenrodyellow">A press-and-hold will affect the articulation of each note that is produced.  The attack and the decay of each note will increase and decrease, moving from a very pointed sound to a more smooth sound and vise-versa.</p>
-              </div>
-              <div style="padding: 5px;">
-                <h2 style="color: lightgreen">Green Button</h2>
-                <p class="app-description-text" style="color: lightgreen">The green button controls the <u>timbre</u> of the entire sound.  Timbre is best defined as the character or quality of a musical sound.</p>
-                <p class="app-description-text" style="color: lightgreen"><b>Quick Press</b></p>
-                <p class="app-description-text" style="color: lightgreen">A quick press will result in random changes to some fun audio effects like echo and vibrato (which can make the sound feel silly and unstable)</p>
-                <p class="app-description-text" style="color: lightgreen"><b>Press-and-Hold</b></p>
-                <p class="app-description-text" style="color: lightgreen">A press-and-hold will adjust the overall intensity of the sound by making it brighter and darker.  The movement of this change works similarly to the red button's tempo change</p>
-              </div>
-              <div style="padding: 5px;">
-                <h2 style="color: lightblue">Blue Button</h2>
-                <p class="app-description-text" style="color: lightblue">The blue button controls what notes out of specific scales of notes will randomly play when the app is on.  Harmony is all about combinations of similar notes played together to produce pleasing (or unpleasing) sounds</p>
-                <p class="app-description-text" style="color: lightblue"><b>Quick Press</b></p>
-                <p class="app-description-text" style="color: lightblue">A quick press will result in random scale to be selected from a specific category of scales which you can select with the drop-down list above the blue button interface.</p>
-                <p class="app-description-text" style="color: lightblue"><b>Press-and-Hold</b></p>
-                <p class="app-description-text" style="color: lightblue">A press-and-hold will turn on and off voices.  There is a pattern that the app will follow when turning on and off voices.  It will cycle through different combinations of voices, until it ultimately reaches all three voices being on.</p>
-              </div>
+              <br>
             </div>
-            <br>
+          </div>
+          <br>
+          <div class="control-instruct-panel">
+            <div class="interface-header"><h2>Game Controllers:</h2><button id="controller-instruct-expand">+</button></div>
+            <div id="controllers-instruct">
+              <p class="app-description-text">Controlling the <b>Noise and Buttons</b> app with a game controller allows detailed control of the four aspects of music while still being easy and fun to use.  Below is a list of every controller button and joystick organized by the musical aspect they control.  Each control includes a brief description of what it does when interaced with:</p>
+              <div class="controllers-instruct-panel">
+                <div style="padding: 5px;">
+                  <h2 style="color: lightsalmon">Tempo</h2>
+                  <p class="app-description-text" style="color: lightsalmon"><b>Left Joy-Stick</b></p>
+                  <p class="app-description-text" style="color: lightsalmon">By moving the left joy-stick up or down, the <u>tempo</u> will move up or down.  Depending on how far you push the stick in either direction, the speed of change will adjust accordingly.</p>
+                  <p class="app-description-text" style="color: lightsalmon"><b>Left Joy-Stick Button</b></p>
+                  <p class="app-description-text" style="color: lightsalmon">Pressing the left joy-stick button will result in random <u>tempo</u> between 50-140bpm (beats-per-minute).</p>
+                </div>
+                <div style="padding: 5px;">
+                  <h2 style="color: lightgoldenrodyellow">Rhythm</h2>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow"><b>Direction-Pad</b></p>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow">The direction-pad allows for specific control of the <u>rhythm</u> in each voice.  The left and right buttons on the pad will let you select which voice you want to adjust the <u>rhythm</u> of, and the up and down buttons on the pad will increase or decrease the note value of the selected voice.</p>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow"><b>Left-Bumper</b></p>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow">The left-bumper will adjust the attack of each note by bouncing between the minimum and maximum attack value while held down.</p>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow"><b>Left-Trigger</b></p>
+                  <p class="app-description-text" style="color: lightgoldenrodyellow">The left-trigger will adjust the decay of each noteby bouncing between the minimum and maximum attack value while held down.</p>
+                </div>
+                <div style="padding: 5px;">
+                  <h2 style="color: lightgreen">Timbre</h2>
+                  <p class="app-description-text" style="color: lightgreen"><b>A, B, X, and Y Buttons</b></p>
+                  <p class="app-description-text" style="color: lightgreen">These four buttons provide percise control to the <u>timbre's</u> two main effects: echo and wobble.  X controls the feedback of the echo (how many echos are heard after every note).  Y controls the volume of the echo.  A controls the speed of the wobble.  B controls how intense the wobble effect is on the sound.</p>
+                  <p class="app-description-text" style="color: lightgreen"><b>Right-Bumper</b></p>
+                  <p class="app-description-text" style="color: lightgreen">The right-bumper will adjust how bright the sound is.</p>
+                  <p class="app-description-text" style="color: lightgreen"><b>Right-Trigger</b></p>
+                  <p class="app-description-text" style="color: lightgreen">The right-trigger will adjust how resonant the sound is.</p>
+                </div>
+                <div style="padding: 5px;">
+                  <h2 style="color: lightblue">Harmony</h2>
+                  <p class="app-description-text" style="color: lightblue"><b>Plus and Minus Buttons</b></p>
+                  <p class="app-description-text" style="color: lightblue">The plus and minus buttons (labeled as "+" & "-") will cycle through different combinations of voices.</p>
+                  <p class="app-description-text" style="color: lightblue"><b>Right Joy-Stick</b></p>
+                  <p class="app-description-text" style="color: lightblue">Around the right joy-stick is a wheel of 12 scales.  When you move the stick to one of these scale labels on the wheel, the corresponding scale will be set as the scale of the synth.</p>
+                  <p class="app-description-text" style="color: lightblue"><b>Right Joy-Stick Button</b></p>
+                  <p class="app-description-text" style="color: lightblue">Pressing the right joy-stick button will result in a random scale to be selected.</p>
+                </div>
+              </div>
+              <p class="app-description-text">Pressing the home button will switch the app on or off.</p>
+              <br>
+            </div>
           </div>
           <br>
           <p class="app-description-text">To learn more about the details and inner-working of the app, <a href="https://www.michaelgasparimusic.com/noise-and-buttons" target="_blank">click here</a> to read the thesis paper for <b>Noise and Buttons</b>.</p>
         </div>
       </div>
     </main>
+    <script>
+      const buttonsInstruct = document.getElementById('buttons-instruct');
+      const buttonsInstructExpand = document.getElementById('buttons-instruct-expand');
+      let buttonsInstructInc = 1;
+      buttonsInstructExpand.addEventListener('click', function() {
+        buttonsInstructInc++;
+        if (buttonsInstructInc%2 === 0) {
+          buttonsInstruct.style.display = 'block';
+          buttonsInstructExpand.innerHTML = '-';
+        } else {
+          buttonsInstruct.style.display = 'none';
+          buttonsInstructExpand.innerHTML = '+';
+        }
+      });
+      const controllerInstruct = document.getElementById('controllers-instruct');
+      const controllerInstructExpand = document.getElementById('controller-instruct-expand');
+      let controllerInstructInc = 1;
+      controllerInstructExpand.addEventListener('click', function() {
+        controllerInstructInc++;
+        if (controllerInstructInc%2 === 0) {
+          controllerInstruct.style.display = 'block';
+          controllerInstructExpand.innerHTML = '-';
+        } else {
+          controllerInstruct.style.display = 'none';
+          controllerInstructExpand.innerHTML = '+';
+        }
+      });
+    </script>
   </body>
 </html>

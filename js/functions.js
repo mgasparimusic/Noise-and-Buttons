@@ -4,10 +4,10 @@
 
 //Functions
 
-import {allScales} from '../js/midiMessages.js'; //Lists with data for MIDI.
-import {rhythmGrid} from '../js/rhythmMessages.js'; //List with data for rhythm grids.
+import { allScales } from '../js/midiMessages.js'; //Lists with data for MIDI.
+import { rhythmGrid } from '../js/rhythmMessages.js'; //List with data for rhythm grids.
 
-//Random Number Generator
+//Random Number Generator that doesn't repeat the previous number returned.
 const history = [];
 function getRandomNumber(min, max) {
   if (max < min) {
@@ -32,11 +32,41 @@ function getRandomDecimal() {
   return randomDecimal;
 }
 
-//Tempo Chooser
+//Opposite Number Function
+function getOppositeInRange(num, min, max) {
+  if (num < min || num > max) {
+    throw new Error('Input number is outside the specified range.');
+  }
+  const midpoint = (min + max) / 2;
+  const opposite = midpoint - (num - midpoint);
+  return opposite;
+}
+
+function isBetween(num, min, max) {
+  return num >= min && num <= max;
+}
+
+//Data Bounce Function
+function dataBounce(peak, value, inc, min, max) {
+  if (!peak && value < max) {
+    value += inc;
+    if (value >= max) {
+      peak = true;
+    }
+  } else if (peak && value > min) {
+    value -= inc;
+    if (value <= min) {
+      peak = false;
+    }
+  }
+  return [value, peak];
+}
+
+//Tempo Chooser–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*|
 let tempo = 50;
+let currentTempo = 50;
 let tempoList = [50, 65, 85, 115, 140];
 let tempoPeak = false;
-const redPressHoldInfo = document.getElementById('red-press-hold-info');
 let averageTempo = [];
 
 function tempoChooser(tDiff) {
@@ -45,10 +75,8 @@ function tempoChooser(tDiff) {
     let tempo = tempoList[rnd];
     if (tempo === 50) {
       tempoPeak = false;
-      redPressHoldInfo.innerHTML = `<img src="images/nab_tempo_direction_up.png" id="tempo-direction">`;
     } else if (tempo === 140) {
       tempoPeak = true;
-      redPressHoldInfo.innerHTML = `<img src="images/nab_tempo_direction_down.png" id="tempo-direction">`;
     }
     return tempo;
   }
@@ -69,236 +97,193 @@ function tempoChooser(tDiff) {
       tempo = Math.round(60000/average);
     }
   }
-  return tempo;
-}
-
-let currentTempo = tempoChooser();
-//Tempo Percise Control
-function tempoPerciseControl() {
-  if (!tempoPeak && currentTempo < 140) {
-    tempo++;
-    if (tempo === 140) {
-      tempoPeak = true;
-      redPressHoldInfo.innerHTML = `<img src="images/nab_tempo_direction_down.png" id="tempo-direction">`;
-    }
-  } else if (tempoPeak && currentTempo > 50) {
-    tempo--;
-    if (tempo === 50) {
-      tempoPeak = false;
-      redPressHoldInfo.innerHTML = `<img src="images/nab_tempo_direction_up.png" id="tempo-direction">`;
-    }
-  }
   currentTempo = tempo;
   return tempo;
 }
 
-//Rhythm Chooser
-let randomRhythm = {
-  randomRhythmLow: 3,
-  randomRhythmMid: 3,
-  randomRhythmHigh: 3
+//Tempo Percise Control–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*|
+function tempoPerciseControl(direction) {
+  if (direction && direction === 'up') {
+    if (tempo >= 140) {
+      tempo = 140;
+    }
+    tempo++;
+  } else if ( direction && direction === 'down') {
+    if (tempo <= 50) {
+      tempo = 50;
+    }
+    tempo--;
+  } else if (!direction) {
+    const tempoBounce = dataBounce(tempoPeak, currentTempo, 1, 50, 140);
+    currentTempo = tempoBounce[0];
+    tempoPeak = tempoBounce[1];
+    tempo = currentTempo;
+  }
+  return tempo;
 }
+
+//Rhythm Chooser–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*|
+let rhythm = [5, 5, 5];
 let rhythmList = {
   lowList: rhythmGrid.quarterNoteGrid,
+  lowStepSeqLength: 4,
   midList: rhythmGrid.quarterNoteGrid,
-  highList: rhythmGrid.quarterNoteGrid
-}
-let lowValue = document.getElementById('js-rhythm-value-low');
-let midValue = document.getElementById('js-rhythm-value-mid');
-let highValue = document.getElementById('js-rhythm-value-high');
-
-function rhythmChooser() {
-  randomRhythm.randomRhythmLow = getRandomNumber(0, 7);
-  let low = randomRhythm.randomRhythmLow;
-  
-  if (low === 0) {
-    lowValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_whole_note.png"></img>`;
-    rhythmList.lowList = rhythmGrid.wholeNoteGrid;
-  } else if (low === 1) {
-    lowValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_half_note.png">`;
-    rhythmList.lowList = rhythmGrid.halfNoteGrid;
-  } else if (low === 2) {
-    lowValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_half_note_triplet.png">`;
-    rhythmList.lowList = rhythmGrid.halfNoteTripletGrid;
-  } else if (low === 3) {
-    lowValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_quarter_note.png">`;
-    rhythmList.lowList = rhythmGrid.quarterNoteGrid;
-  } else if (low === 4) {
-    lowValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_quarter_note_triplet.png">`;
-    rhythmList.lowList = rhythmGrid.quarterNoteTripletGrid;
-  } else if (low === 5) {
-    lowValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_eight_note.png">`;
-    rhythmList.lowList = rhythmGrid.eightNoteGrid;
-  } else if (low === 6) {
-    lowValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_eight_note_triplet.png">`;
-    rhythmList.lowList = rhythmGrid.eightNoteTripletGrid;
-  } else if (low === 7) {
-    lowValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_sixteenth_note.png">`;
-    rhythmList.lowList = rhythmGrid.sixteenthNoteGrid;
-  }
-  randomRhythm.randomRhythmMid = getRandomNumber(0, 6) + 1;
-  let mid = randomRhythm.randomRhythmMid;
-
-  if (mid === 1) {
-    midValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_half_note.png">`;
-    rhythmList.midList = rhythmGrid.halfNoteGrid;
-  } else if (mid === 2) {
-    midValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_half_note_triplet.png">`;
-    rhythmList.midList = rhythmGrid.halfNoteTripletGrid;
-  } else if (mid === 3) {
-    midValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_quarter_note.png">`;
-    rhythmList.midList = rhythmGrid.quarterNoteGrid;
-  } else if (mid === 4) {
-    midValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_quarter_note_triplet.png">`;
-    rhythmList.midList = rhythmGrid.quarterNoteTripletGrid;
-  } else if (mid === 5) {
-    midValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_eight_note.png">`;
-    rhythmList.midList = rhythmGrid.eightNoteGrid;
-  } else if (mid === 6) {
-    midValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_eight_note_triplet.png">`;
-    rhythmList.midList = rhythmGrid.eightNoteTripletGrid;
-  } else if (mid === 7) {
-    midValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_sixteenth_note.png">`;
-    rhythmList.midList = rhythmGrid.sixteenthNoteGrid;
-  }
-  randomRhythm.randomRhythmHigh = getRandomNumber(0, 6) + 1;
-  let high = randomRhythm.randomRhythmHigh;
-
-  if (high === 1) {
-    highValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_half_note.png">`;
-    rhythmList.highList = rhythmGrid.halfNoteGrid;
-  } else if (high === 2) {
-    highValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_half_note_triplet.png">`;
-    rhythmList.highList = rhythmGrid.halfNoteTripletGrid;
-  } else if (high === 3) {
-    highValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_quarter_note.png">`;
-    rhythmList.highList = rhythmGrid.quarterNoteGrid;
-  } else if (high === 4) {
-    highValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_quarter_note_triplet.png">`;
-    rhythmList.highList = rhythmGrid.quarterNoteTripletGrid;
-  } else if (high === 5) {
-    highValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_eight_note.png">`;
-    rhythmList.highList = rhythmGrid.eightNoteGrid;
-  } else if (high === 6) {
-    highValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_eight_note_triplet.png">`;
-    rhythmList.highList = rhythmGrid.eightNoteTripletGrid;
-  } else if (high === 7) {
-    highValue.innerHTML = `<img class="rhythm-value" src="images/nab_rhythm_sixteenth_note.png">`;
-    rhythmList.highList = rhythmGrid.sixteenthNoteGrid;
-  }
-  return rhythmList;
+  midStepSeqLength: 4,
+  highList: rhythmGrid.quarterNoteGrid,
+  highStepSeqLength: 4
 }
 
+function rhythmChooserBtn() {
+  rhythm[0] = getRandomNumber(0, 10);
+  rhythm[1] = getRandomNumber(0, 9) + 1;
+  rhythm[2] = getRandomNumber(0, 9) + 1;
+  rhythmSet(rhythm[0], rhythm[1], rhythm[2]);
+  return [rhythmList, rhythm[0], rhythm[1], rhythm[2]];
+}
+
+function rhythmChooserCont(up, down, voice) {
+  function rhythmUpDown(up, down, value) {
+    if (up) {
+      if (value >= 10) {
+        return value;
+      } else {
+        value += 1;
+      }
+    }
+    if (down) {
+      if (value <= 0) {
+        return value;
+      } else {
+        value -= 1;
+      }
+    }
+    return value;
+  }
+  rhythm[voice] = rhythmUpDown(up, down, rhythm[voice]);
+  rhythmSet(rhythm[0], rhythm[1], rhythm[2]);
+  return [rhythmList, rhythm[0], rhythm[1], rhythm[2]];
+}
+
+function rhythmSet(low, mid, high) {
+  rhythmList.lowList = rhythmGrid[low][1];
+  rhythmList.lowStepSeqLength = rhythmGrid[low][2];
+  rhythmList.midList = rhythmGrid[mid][1];
+  rhythmList.midStepSeqLength = rhythmGrid[mid][2];
+  rhythmList.highList = rhythmGrid[high][1];
+  rhythmList.highStepSeqLength = rhythmGrid[high][2];
+}
+
+//Articulation Control–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*|
 let attackValue = 1;
 let decayValue = 2;
 let attackPeak = false;
 let decayPeak = false;
-const attackVisual = document.getElementById('js-attack-time');
-const decayVisual = document.getElementById('js-decay-time');
-const attackSpeed = document.getElementById('js-attack-speed');
-const decaySpeed = document.getElementById('js-decay-speed');
 let turn = true;
 
 function rhythmPerciseControl() {
-  if (!turn && !attackPeak && attackValue < 100) {
-    attackValue += 2;
-    attackVisual.value = attackValue;
-    if (attackValue >= 100) {
-      attackPeak = true;
-    }
-  } else if (!turn && attackPeak && attackValue > 2) {
-    attackValue -= 2;
-    attackVisual.value = attackValue;
-    if (attackValue <= 2) {
-      attackPeak = false;
-      turn = true;
-    }
-  } else if (turn && !decayPeak && decayValue < 100) {
-    decayValue += 2;
-    decayVisual.value = decayValue;
-    if (decayValue >= 100) {
-      decayPeak = true;
-      turn = false;
-    }
-  } else if (turn && decayPeak && decayValue > 2) {
-    decayValue -= 2;
-    decayVisual.value = decayValue;
-    if (decayValue <= 2) {
-      decayPeak = false;
-    }
-  }
-  if (attackValue >= 50) {
-    attackSpeed.textContent = 'Slow';
-  } else {
-    attackSpeed.textContent = 'Fast';
-  }
-  if (decayValue >= 50) {
-    decaySpeed.textContent = 'Slow';
-  } else {
-    decaySpeed.textContent = 'Fast';
+  if (!turn) {
+    attackValue = attackPerciseControl();
+  } else if (turn) {
+    decayValue = decayPerciseControl();
   }
   return [attackValue, decayValue, turn];
 }
 
-//Timbre Chooser
-let randomDelayValues = {
-  feedbackAmount: 0,
-  wetDryMix: 10,
-  vibratoRate: 0,
-  vibratoDepth: 0,
+function attackPerciseControl() {
+  const attackBounce = dataBounce(attackPeak, attackValue, 2, 2, 100);
+  attackValue = attackBounce[0];
+  attackPeak = attackBounce[1];
+  if (attackValue <= 2) {
+    turn = true;
+  }
+  return attackValue;
 }
-let delayVisual = document.getElementById('js-delay');
+
+function decayPerciseControl() {
+  const decayBounce = dataBounce(decayPeak, decayValue, 2, 2, 100);
+  decayValue = decayBounce[0];
+  decayPeak = decayBounce[1];
+  if (decayValue >= 100) {
+    turn = false;
+  }
+  return decayValue;
+}
+
+//Timbre Chooser–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*|
+let delayValues = {
+  feedbackAmount: 0,
+  wetDryMix: 0,
+  vibratoRate: 0,
+  vibratoDepth: 0
+}
+let delayPeaks = {
+  feedbackPeak: false,
+  wetDryPeak: false,
+  vibratoRatePeak: false,
+  vibratoDepthPeak: false
+}
 
 function timbreChooser() {
-  randomDelayValues.feedbackAmount = getRandomNumber(0, 7) / 10;
-  randomDelayValues.wetDryMix = getRandomNumber(0, 7) * 10;
-  randomDelayValues.vibratoRate = getRandomNumber(0, 14);
-  randomDelayValues.vibratoDepth = getRandomDecimal() * 75;
-
-  delayVisual.value = randomDelayValues.feedbackAmount;
-  delayVisual.style.setProperty(`--box-shadow`, `-400px 0 0 390px rgba(0, 255, 0, ${randomDelayValues.wetDryMix / 70})`);
-
-  return randomDelayValues;
+  delayValues.feedbackAmount = getRandomNumber(0, 7) / 10;
+  delayValues.wetDryMix = getRandomNumber(0, 7) * 10;
+  delayValues.vibratoRate = getRandomNumber(0, 14);
+  delayValues.vibratoDepth = getRandomDecimal().toFixed(1) * 75;
+  return delayValues;
+}
+function feedbackPerciseControl() {
+  const feedbackBounce = dataBounce(delayPeaks.feedbackPeak, delayValues.feedbackAmount, 1, 0, 7);
+  delayValues.feedbackAmount = feedbackBounce[0];
+  delayPeaks.feedbackPeak = feedbackBounce[1];
+  return delayValues.feedbackAmount / 10;
+}
+function wetDryMixPerciseControl() {
+  const wetDryMixBounce = dataBounce(delayPeaks.wetDryPeak, delayValues.wetDryMix, 10, 0, 70);
+  delayValues.wetDryMix = wetDryMixBounce[0];
+  delayPeaks.wetDryPeak = wetDryMixBounce[1];
+  console.log(delayValues.wetDryMix);
+  return delayValues.wetDryMix;
+}
+function vibratoRatePerciseControl() {
+  const vibratoRateBounce = dataBounce(delayPeaks.vibratoRatePeak, delayValues.vibratoRate, 1, 0, 14);
+  delayValues.vibratoRate = vibratoRateBounce[0];
+  delayPeaks.vibratoRatePeak = vibratoRateBounce[1];
+  console.log(delayValues.vibratoRate);
+  return delayValues.vibratoRate;
+}
+function vibratoDepthPerciseControl() {
+  const vibratoDepthBounce = dataBounce(delayPeaks.vibratoDepthPeak, delayValues.vibratoDepth, 5, 0, 75);
+  delayValues.vibratoDepth = vibratoDepthBounce[0];
+  delayPeaks.vibratoDepthPeak = vibratoDepthBounce[1];
+  console.log(delayValues.vibratoDepth);
+  return delayValues.vibratoDepth;
 }
 
 let cutoffValue = 1000;
 let qValue = 2;
 let cutoffPeak = false;
 let qPeak = false;
-const cutoffVisual = document.getElementById("js-cutoff-value");
-const qVisual = document.getElementById("js-q-value");
 
 function timbrePerciseControl() {
-  if (!cutoffPeak && cutoffValue < 5000) {
-    cutoffValue += 20;
-    cutoffVisual.value = cutoffValue;
-    if (cutoffValue === 5000) {
-      cutoffPeak = true;
-    }
-  } else if (cutoffPeak && cutoffValue > 1000) {
-    cutoffValue -= 20;
-    cutoffVisual.value = cutoffValue;
-    if (cutoffValue === 1000) {
-      cutoffPeak = false;
-    }
-  }
-  if (!qPeak && qValue < 22) {
-    qValue++;
-    qVisual.value = qValue / 10;
-    if (qValue === 22) {
-      qPeak = true;
-    }
-  } else if (qPeak && qValue > 2) {
-    qValue--;
-    qVisual.value = qValue / 10;
-    if (qValue === 2) {
-      qPeak = false;
-    }
-  }
-  return [cutoffValue, qValue / 10];
+  cuttoffPerciseControl(20);
+  qPerciseControl(1);
+  return [cutoffValue, qValue / 20 - 0.1];
 }
 
-//Select Harmonic Language
+function cuttoffPerciseControl(incAmount) {
+  const cutoffBounce = dataBounce(cutoffPeak, cutoffValue, incAmount, 1000, 5000);
+  cutoffValue = cutoffBounce[0];
+  cutoffPeak = cutoffBounce[1];
+  return cutoffValue;
+}
+
+function qPerciseControl(incAmount) {
+  const qBounce = dataBounce(qPeak, qValue, incAmount, 2, 22);
+  qValue = qBounce[0];
+  qPeak = qBounce[1];
+  return qValue / 20 - 0.1;
+}
+
+//Select Harmonic Language–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*|
 function selectScaleType() {
   let scaleType = document.getElementById('scales').selectedIndex;
   return scaleType;
@@ -307,88 +292,46 @@ let scaleType = selectScaleType();
 let randomScale = allScales[0][0][0];
 let noteIndexMax = allScales[0][1];
 
-function selectHarmonicLanguage() {
+function selectHarmonicLanguage(scale) {
   scaleType = selectScaleType();
-  let rnd = getRandomNumber(1, 12) - 1;
-  console.log(rnd);
-  randomScale = allScales[scaleType][0][rnd];
+  let rnd;
+  if (scale != null) {
+    rnd = scale;
+    randomScale = allScales[scaleType][0][scale];
+  } else {
+    rnd = getRandomNumber(1, 12) - 1;
+    randomScale = allScales[scaleType][0][rnd];
+  }
   noteIndexMax = allScales[scaleType][1];
-  document.getElementById('js-random-scale').innerHTML = `${randomScale.scaleValue}`;
-  return [randomScale.scale, noteIndexMax];
+  return [randomScale.scale, noteIndexMax, randomScale.scaleValue];
 }
 
-//Voice Chooser
+//Voice Chooser–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*|
+let inc = 0;
+const voiceList = [[1, 1, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 0], [1, 0, 1], [0, 1, 1]];
 let voices = {
   lowVoice: 1,
   middleVoice: 1,
   highVoice: 1
 }
-let voiceVisual = {
-  lowVoiceVisual: document.getElementById('low-voice'),
-  midVoiceVisual: document.getElementById('mid-voice'),
-  highVoiceVisual: document.getElementById('high-voice')
-}
-voiceVisual.lowVoiceVisual.style.setProperty('--low-bg-color', 'rgb(0, 134, 251)');
-voiceVisual.midVoiceVisual.style.setProperty('--mid-bg-color', 'rgb(0, 134, 251)');
-voiceVisual.highVoiceVisual.style.setProperty('--high-bg-color', 'rgb(0, 134, 251)');
-let inc = 1;
-function voiceChooser() {
-  if (inc === 0) {
-    voices.lowVoice = 1;
-    voices.middleVoice = 1;
-    voices.highVoice = 1;
-    voiceVisual.lowVoiceVisual.style.setProperty('--low-bg-color', 'rgb(0, 134, 251)');
-    voiceVisual.midVoiceVisual.style.setProperty('--mid-bg-color', 'rgb(0, 134, 251)');
-    voiceVisual.highVoiceVisual.style.setProperty('--high-bg-color', 'rgb(0, 134, 251)');
-  } else if (inc === 1) {
-    voices.lowVoice = 1;
-    voices.middleVoice = 0;
-    voices.highVoice = 0;
-    voiceVisual.lowVoiceVisual.style.setProperty('--low-bg-color', 'rgb(0, 134, 251)');
-    voiceVisual.midVoiceVisual.style.setProperty('--mid-bg-color', 'black');
-    voiceVisual.highVoiceVisual.style.setProperty('--high-bg-color', 'black');
-  } else if (inc === 2) {
-    voices.lowVoice = 0;
-    voices.middleVoice = 1;
-    voices.highVoice = 0;
-    voiceVisual.lowVoiceVisual.style.setProperty('--low-bg-color', 'black');
-    voiceVisual.midVoiceVisual.style.setProperty('--mid-bg-color', 'rgb(0, 134, 251)');
-    voiceVisual.highVoiceVisual.style.setProperty('--high-bg-color', 'black');
-  } else if (inc === 3) {
-    voices.lowVoice = 0;
-    voices.middleVoice = 0;
-    voices.highVoice = 1;
-    voiceVisual.lowVoiceVisual.style.setProperty('--low-bg-color', 'black');
-    voiceVisual.midVoiceVisual.style.setProperty('--mid-bg-color', 'black');
-    voiceVisual.highVoiceVisual.style.setProperty('--high-bg-color', 'rgb(0, 134, 251)');
-  } else if (inc === 4) {
-    voices.lowVoice = 1;
-    voices.middleVoice = 1;
-    voices.highVoice = 0;
-    voiceVisual.lowVoiceVisual.style.setProperty('--low-bg-color', 'rgb(0, 134, 251)');
-    voiceVisual.midVoiceVisual.style.setProperty('--mid-bg-color', 'rgb(0, 134, 251)');
-    voiceVisual.highVoiceVisual.style.setProperty('--high-bg-color', 'black');
-  } else if (inc === 5) {
-    voices.lowVoice = 1;
-    voices.middleVoice = 0;
-    voices.highVoice = 1;
-    voiceVisual.lowVoiceVisual.style.setProperty('--low-bg-color', 'rgb(0, 134, 251)');
-    voiceVisual.midVoiceVisual.style.setProperty('--mid-bg-color', 'black');
-    voiceVisual.highVoiceVisual.style.setProperty('--high-bg-color', 'rgb(0, 134, 251)');
-  } else if (inc === 6) {
-    voices.lowVoice = 0;
-    voices.middleVoice = 1;
-    voices.highVoice = 1;
-    voiceVisual.lowVoiceVisual.style.setProperty('--low-bg-color', 'black');
-    voiceVisual.midVoiceVisual.style.setProperty('--mid-bg-color', 'rgb(0, 134, 251)');
-    voiceVisual.highVoiceVisual.style.setProperty('--high-bg-color', 'rgb(0, 134, 251)');
+
+function voiceChooser(down) {
+  if (down === 'down') {
+    inc--;
+    if (inc < 0) {
+      inc = 6;
+    }
+  } else {
+    inc++;
+    if (inc > 6) {
+      inc = 0;
+    }
   }
-  inc++;
-  if (inc > 6) {
-    inc = 0;
-  }
-  return voices;
+  voices.lowVoice = voiceList[inc][0];
+  voices.middleVoice = voiceList[inc][1];
+  voices.highVoice = voiceList[inc][2];
+  return [voices, inc];
 }
 
-//Export functions to main website,js file
-export {tempoChooser, tempoPerciseControl, rhythmChooser, rhythmPerciseControl, timbreChooser, timbrePerciseControl, voiceChooser, selectHarmonicLanguage, selectScaleType};
+//Export functions to main website.js file
+export {isBetween, getOppositeInRange, tempoChooser, tempoPerciseControl, rhythmChooserBtn, rhythmChooserCont, rhythmPerciseControl, attackPerciseControl, decayPerciseControl, timbreChooser, feedbackPerciseControl, wetDryMixPerciseControl, vibratoRatePerciseControl, vibratoDepthPerciseControl, timbrePerciseControl, cuttoffPerciseControl, qPerciseControl, voiceChooser, selectHarmonicLanguage, selectScaleType};
