@@ -326,12 +326,12 @@ async function loadRNBO() {
   const { createDevice } = RNBO;
   await audio.resume();
 
-  const rawPatcher = await fetch('export/patch.export.json');
+  const rawPatcher = await fetch('export/nabSynth/patch.export.json');
   const synthPatcher = await rawPatcher.json();
 
   synthDevice = await createDevice({ context: audio, patcher: synthPatcher });
 
-  const fileResponse = await fetch('export/media/MMG_Kick-11.wav');
+  const fileResponse = await fetch('export/nabSynth/media/MMG_Kick-11.wav');
   const arrayBuf = await fileResponse.arrayBuffer();
 
   const audioBuf = await audio.decodeAudioData(arrayBuf);
@@ -453,7 +453,7 @@ const timeouts = {
   redTimeout: null, 
   yellowTimeout: null,
   greenTimeout: null,
-  blueTimeout: null,
+  blueTimeout: null
 };
 const keyAndMouseList = [
   [redButton, 'red', timeouts.redTimeout, tempoLine, clickAndHoldRed, 100, 49],

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!--website.html-->
+<!--Michael Gaspari-->
+<!--Noise and Buttons-->
+<html>
+  <head>
+    <title>Noise and Buttons</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/website.css">
+    <link rel="stylesheet" href="styles/nav.css">
+    <link rel="stylesheet" href="styles/play.css">
+    <link rel="stylesheet" href="styles/info-panel.css">
+    <link rel="stylesheet" href="styles/controllers.css">
+  </head>
+
+  <body>
+    <nav class="nav">
+      <ul>
+        <li id="app-title"><p>Noise and Buttons</p></li>
+        <li class="nav-links"><a href="index.html">Home</a></li>
+        <li class="nav-links"><a href="about.html">About</a></li>
+        <li class="nav-links"><a href="play.html">Play</a></li>
+        <li class="nav-links"><a href="learn.html">Learn</a></li>
+        <li class="nav-links"><a href="updates.html">Updates</a></li>
+      </ul>
+    </nav>
+    <main class="website-ui">
+      <dialog id="recording-dialog" class="shadow">
+        <div id="audio"></div>
+        <div id="download"></div>
+        <form method="dialog">
+          <button class="main-buttons">Close</button>
+        </form>
+      </dialog>
+      <!-- Control Panel -->
+      <section class="control-panel">
+        <div class="app-controls shadow">
+          <ul class="controls-ul">
+            <li class="h2-list"><h2 class="select-interface-text">Select Interface</h2></li>
+            <li><div class="interface-dropdown">
+              <select name="interface" id="interfaces">
+                <option value="keyboard">Keyboard</option>
+                <option value="button-box">Button Box</option>
+                <option value="controller">Controller</option>
+              </select>
+            </div></li>
+            <li class="h2-list"><h2 id="adjust-volume-text">Adjust Volume</h2></li>
+            <li><div class="volume-container">
+              <p class="main-volume-text">Main</p>
+              <div class="volume-slider">
+                <input type="range" min="0" max="1" value="0" step="0.01" class="main-slider" id="js-main-volume">
+              </div>
+            </div></li>
+            <li><button id="js-mute-button" class="main-buttons">Mute</button></li>
+            <li></li>
+          </ul>
+        </div>
+        <div class="app-start-stop shadow">
+          <ul class="start-stop-ul">
+            <li class="h2-list"><h2 id="start-stop-text">Start/Stop</h2></li>
+            <li><p class="general-description" id="js-start-stop-description">Press spacebar or click on/off button to start/stop.</p></li>
+            <li><button id="js-on-off-button" class="main-buttons start-stop">Off</button></li>
+          </ul>
+        </div>
+        <div class="app-utilities shadow">
+
+        </div>
+      </section>
+      <!-- Info Panel -->
+      <section class="info-panel shadow">
+
+      </section>
+      <!-- Controllers Panel -->
+      <section id="wood-texture" class="controllers-panel shadow">
+        <!-- Buttons View (Active on Load)-->
+        <div id="buttons-view">
+          <div class="buttons-container">
+            <button class="button" id="red-button">
+              <img type="image" class="button-image" id="red-button-image" draggable="false" src="images/nab_button_red_off.png">
+            </button>
+            <button class="button" id="yellow-button">
+              <img type="image" class="button-image" id="yellow-button-image" draggable="false" src="images/nab_button_yellow_off.png">
+            </button>
+            <button class="button" id="green-button">
+              <img type="image" class="button-image" id="green-button-image" draggable="false" src="images/nab_button_green_off.png">
+            </button>
+            <button class="button" id="blue-button">
+              <img type="image" class="button-image" id="blue-button-image" draggable="false" src="images/nab_button_blue_off.png">
+            </button>
+          </div>
+        </div>
+        <!-- Game Controller View (Hidden on Load) -->
+        <div id="game-controller-view">
+          <div id="controller-not-connected-area" class="controller-status">
+            <div class="loader"></div>
+            <div>Controller Not Connected...</div>
+          </div>
+          <div id="controller-connected-area">
+            <img type="image" class="controller-view-geo" src="images/nab_controller_view_geo.png">
+            <img type="image" class="scale-wheel" src="images/nab_scale_wheel_diatonic.png">
+            <div class="controller-connected-container">
+              <div id="controller-connected" class="controller-status">Connected</div>
+              <div class="controller-buttons">
+                <div class="controller-buttons-flex" id="controller-red">
+                  <img type="image" class="joystick-direction" src="images/nab_tempo_direction_up.png">
+                  <div id="joystick-wrapper-red"></div>
+                  <img type="image" class="joystick-direction" style="transform: rotate(180deg);"src="images/nab_tempo_direction_up.png">
+                </div>
+                <div class="controller-buttons-flex" id="controller-yellow">
+                  <div class="d-pad-layout">
+                    <img type="image" id="controller-button-12" class="d-pad-button up" src="images/nab_tempo_direction_up.png">
+                    <img type="image" id="controller-button-14" class="d-pad-button left" src="images/nab_tempo_direction_up.png">
+                    <img type="image" style="background-color: yellow;" class="d-pad-middle middle" src="images/nab_note_logo_corners.png">
+                    <img type="image" id="controller-button-15" class="d-pad-button right" src="images/nab_tempo_direction_up.png">
+                    <img type="image" id="controller-button-13" class="d-pad-button down" src="images/nab_tempo_direction_up.png">
+                  </div>
+                  <div id="controller-button-4" class="controller-bumper"></div>
+                  <div id="controller-button-6" class="controller-trigger"></div>
+                </div>
+                <div class="controller-buttons-flex" id="controller-green">
+                  <div class="button-pad-layout">
+                    <img type="image" id="controller-button-3" class="button-pad-button x-button" src="images/nab_controller_x.png">
+                    <img type="image" id="controller-button-2" class="button-pad-button y-button" src="images/nab_controller_y.png">
+                    <img type="image" id="controller-button-1" class="button-pad-button a-button" src="images/nab_controller_a.png">
+                    <img type="image" id="controller-button-0" class="button-pad-button b-button" src="images/nab_controller_b.png">
+                  </div>
+                  <div id="controller-button-5" class="controller-bumper"></div>
+                  <div id="controller-button-7" class="controller-trigger"></div>
+                </div>
+                <div class="controller-buttons-flex" id="controller-blue">
+                  <div class="plus-minus-row">
+                    <div id="controller-button-8" class="plus-minus-button">-</div>
+                    <div id="controller-button-9" class="plus-minus-button">+</div>
+                  </div>
+                  <div id="joystick-wrapper-blue"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- JS -->
+    <script>
+    </script>
+    <script type="text/javascript" src="https://cdn.cycling74.com/rnbo/latest/rnbo.min.js"></script>
+    <script type="module" src="js/functionsMetro.js"></script>
+    <script type="module" src="js/metro.js"></script>
+  </body>
+</html>
