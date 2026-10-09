@@ -9,8 +9,17 @@ import { joysticks, controllerPanelNintendo } from './controllersPanel.js';
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-window.addEventListener('contextmenu', function(event) {
-  event.preventDefault();
+// Target all images, or use a specific class like '.no-download'
+document.querySelectorAll('img').forEach(img => {
+  // Prevent the long-press context menu from appearing
+  img.addEventListener('contextmenu', event => {
+    event.preventDefault();
+  });
+
+  // Optional: Prevent users from dragging the image on newer iOS/iPadOS versions
+  img.addEventListener('dragstart', event => {
+    event.preventDefault();
+  });
 });
 
 //JS Audio Context Declaration 
