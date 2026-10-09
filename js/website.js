@@ -9,6 +9,10 @@ import { joysticks, controllerPanelNintendo } from './controllersPanel.js';
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
+window.addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+});
+
 //JS Audio Context Declaration 
 let audio;
 let buffer;
