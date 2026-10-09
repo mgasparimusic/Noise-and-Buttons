@@ -9,16 +9,18 @@ import { joysticks, controllerPanelNintendo } from './controllersPanel.js';
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-// Target all images, or use a specific class like '.no-download'
-document.querySelectorAll('img').forEach(img => {
-  // Prevent the long-press context menu from appearing
-  img.addEventListener('contextmenu', event => {
-    event.preventDefault();
+const images = document.querySelectorAll('img');
+
+images.forEach(img => {
+  console.log(img);
+  // Disables the right-click/long-press context menu
+  img.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
   });
 
-  // Optional: Prevent users from dragging the image on newer iOS/iPadOS versions
-  img.addEventListener('dragstart', event => {
-    event.preventDefault();
+  // Disables the default browser dragging behavior
+  img.addEventListener('dragstart', (e) => {
+    e.preventDefault();
   });
 });
 

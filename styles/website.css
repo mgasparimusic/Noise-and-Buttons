@@ -13,6 +13,23 @@ main {
   display: block;
 }
 
+img {
+  /* Prevents the semi-transparent tap overlay color on mobile browsers */
+  -webkit-tap-highlight-color: transparent;
+  
+  /* Prevents the default callout popup menu (iOS Safari) when long-pressing */
+  -webkit-touch-callout: none;
+  
+  /* Prevents the image from being selected or highlighted as text */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  /* Prevents native dragging behavior (which can trigger ghost highlights) */
+  -webkit-user-drag: none;
+}
+
 .main-text-container {
   background-color: white;
   padding-top: 20px;
