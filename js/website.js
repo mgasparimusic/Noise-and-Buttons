@@ -269,7 +269,7 @@ function setup() {
   document.body.onclick = () => {
       audio.resume();
   }
-  onOffButton.addEventListener('click', function() {
+  onOffButton.addEventListener('pointerdown', function() {
     onOffSynth();
   });
   interfaceSelection.addEventListener('change', function() {
@@ -303,7 +303,7 @@ function setup() {
       voiceSet(synthValues.selectedVoice);
     }
   });
-  muteButton.addEventListener('click', function() {
+  muteButton.addEventListener('pointerdown', function() {
     muteSynth();
   });
   mainVolumeSlider.addEventListener('input', function() {
@@ -464,13 +464,13 @@ const keyAndMouseList = [
 
 function addKeyAndMouse(list) {
   list.forEach((i) => {
-    i[0].addEventListener('mousedown', function() {
+    i[0].addEventListener('pointerdown', function() {
       changeImage(i[1]);
       i[2] = setTimeout(() => {
         i[3] = setInterval(i[4], i[5]);
       }, 500);
     })
-    i[0].addEventListener('mouseup', function(event) {
+    i[0].addEventListener('pointerup', function(event) {
       clearTimeout(i[2]);
       clearInterval(i[3]);
       if (i[1] === 'red') {
