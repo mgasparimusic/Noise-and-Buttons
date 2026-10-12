@@ -2,10 +2,11 @@
 //Michael Gaspari
 //Noise and Buttons
 
-import { isBetween, getOppositeInRange, tempoChooser, tempoPerciseControl, rhythmChooserBtn, rhythmChooserCont, rhythmPerciseControl, attackPerciseControl, decayPerciseControl, timbreChooser, feedbackPerciseControl, wetDryMixPerciseControl, vibratoRatePerciseControl, vibratoDepthPerciseControl, timbrePerciseControl, cuttoffPerciseControl, qPerciseControl, voiceChooser, selectHarmonicLanguage, selectScaleType } from '../js/functions.js';
+import { isBetween, getOppositeInRange, tempoChooser, tempoPerciseControl, rhythmChooserBtn, rhythmChooserCont, rhythmPerciseControl, attackPerciseControl, decayPerciseControl, timbreChooser, feedbackPerciseControl, wetDryMixPerciseControl, vibratoRatePerciseControl, vibratoDepthPerciseControl, timbrePerciseControl, cuttoffPerciseControl, qPerciseControl, voiceChooser, selectHarmonicLanguage } from '../js/functions.js';
 import { startStopwatch } from './stopwatch.js';
 import { infoPanelUI } from './infoPanel.js';
 import { joysticks, controllerPanelNintendo } from './controllersPanel.js';
+import { Button } from './buttonControl.js'
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -160,6 +161,7 @@ function handleConnectDisconnect(event, connected) {
 
 function controllerInputs() {
   gamepad = navigator.getGamepads()[controllerIndex];
+  if (!gamepad) return; // Prevent "Cannot read property 'buttons' of null"
   const buttons = gamepad.buttons;
   const sticks = gamepad.axes;
   for (let i = 0; i < gamepadButtons.length; i++) {
@@ -464,104 +466,14 @@ function setInports() {
 setup();
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
-const timeouts = {
-  redTimeout: null, 
-  yellowTimeout: null,
-  greenTimeout: null,
-  blueTimeout: null
-};
-const keyAndMouseList = [
-  [redButton, 'red', timeouts.redTimeout, tempoLine, clickAndHoldRed, 100, 49],
-  [yellowButton, 'yellow', timeouts.yellowTimeout, rhythmLine, clickAndHoldYellow, 200, 50],
-  [greenButton, 'green', timeouts.greenTimeout, timbreLine, clickAndHoldGreen, 50, 51],
-  [blueButton, 'blue', timeouts.blueTimeout, voiceLine, clickAndHoldBlue, 500, 52]
-]; //button HTML, color, timeout, line, func, interval, key
 
-function addKeyAndMouse(list) {
-  list.forEach((i) => {
-    i[0].addEventListener('pointerdown', function() {
-      changeImage(i[1]);
-      i[2] = setTimeout(() => {
-        i[3] = setInterval(i[4], i[5]);
-      }, 500);
-    })
-    i[0].addEventListener('pointerup', function(event) {
-      clearTimeout(i[2]);
-      clearInterval(i[3]);
-      if (i[1] === 'red') {
-        quickClickRed(event);
-      } else if (i[1] === 'yellow') {
-        quickClickYellow();
-      } else if (i[1] === 'green') {
-        quickClickGreen();
-      } else if (i[1] === 'blue') {
-        quickClickBlue();
-      }
-      changeImage(i[1]);
-    })
-  });
+const allButtons = new Button(redButton, yellowButton, greenButton, blueButton, tempoLine, rhythmLine, timbreLine, voiceLine, clickAndHoldRed, clickAndHoldYellow, clickAndHoldGreen, clickAndHoldBlue, 100, 200, 50, 500, 49, 50, 51, 52, quickClickRed, quickClickYellow, quickClickGreen, quickClickBlue);
 
-  //Button Key Commands
-  document.addEventListener('keydown', function(event) {
-    if (!event.repeat) {
-      if (event.key === 49 || event.keyCode === 49) {
-        changeImage('red');
-        timeouts.redTimeout = setTimeout(() => {
-          tempoLine = setInterval(clickAndHoldRed, 100);
-        }, 500);
-      } else if (event.key === 50 || event.keyCode === 50) {
-        changeImage('yellow');
-        timeouts.yellowTimeout = setTimeout(() => {
-          rhythmLine = setInterval(clickAndHoldYellow, 200);
-        }, 500);
-      } else if (event.key === 51 || event.keyCode === 51) {
-        changeImage('green');
-        timeouts.greenTimeout = setTimeout(() => {
-          timbreLine = setInterval(clickAndHoldGreen, 50);
-        }, 500);
-      } else if (event.key === 52 || event.keyCode === 52) {
-        changeImage('blue');
-        timeouts.blueTimeout = setInterval(() => {
-          clickAndHoldBlue();
-        }, 500);
-      }
-    }
-  });
-  document.addEventListener('keyup', function(event) {
-    if (event.key === 49 || event.keyCode === 49) {
-      clearTimeout(timeouts.redTimeout);
-      quickClickRed(event);
-      clearInterval(tempoLine);
-      changeImage('red');
-    } else if (event.key === 50 || event.keyCode === 50) {
-      clearTimeout(timeouts.yellowTimeout);
-      quickClickYellow();
-      clearInterval(rhythmLine);
-      changeImage('yellow');
-    } else if (event.key === 51 || event.keyCode === 51) {
-      clearTimeout(timeouts.greenTimeout);
-      quickClickGreen();
-      clearInterval(timbreLine);
-      changeImage('green');
-    } else if (event.key === 52 || event.keyCode === 52) {
-      clearTimeout(timeouts.blueTimeout);
-      quickClickBlue();
-      changeImage('blue');
-    }
-  });
+allButtons.addKeyAndMouse();
 
-  function changeImage(color) {
-    const buttonImage = document.getElementById(`${color}-button-image`);
-    if (buttonImage.src.endsWith('off.png')) {
-      buttonImage.src = `images/nab_button_${color}_on.png`;
-    } else {
-      buttonImage.src = `images/nab_button_${color}_off.png`;
-    }
-  }
-}
-
-addKeyAndMouse(keyAndMouseList);
-
+document.addEventListener('scroll', () => {
+  allButtons.clearAllIntervals();
+});
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -585,7 +497,9 @@ function quickClickRed(event) {
     } else if (synthValues.tempo === 140) {
       infoPanelUI.tempoDirection.func('down');
     }
-    tempo.value = synthValues.tempo;
+    if (tempo) {
+      tempo.value = synthValues.tempo;
+    }
   }
   return synthValues.tempo;
 }
@@ -628,23 +542,25 @@ function setSynthRhythms(rhythmValues, low, mid, high) {
   synthValues.rhythmHigh = rhythmValues.highList;
   synthValues.highStepSeqLength = rhythmValues.highStepSeqLength;
 
-  straightRhythmListLow = new MessageEvent(TimeNow, 'in1', synthValues.rhythmLow[0]);
-  synthDevice.scheduleEvent(straightRhythmListLow);
-  swingRhythmListLow = new MessageEvent(TimeNow, 'in2', synthValues.rhythmLow[1]);
-  synthDevice.scheduleEvent(swingRhythmListLow);
-  lowStepSeqLength.value = synthValues.lowStepSeqLength;
+  if (synthDevice) {
+    straightRhythmListLow = new MessageEvent(TimeNow, 'in1', synthValues.rhythmLow[0]);
+    synthDevice.scheduleEvent(straightRhythmListLow);
+    swingRhythmListLow = new MessageEvent(TimeNow, 'in2', synthValues.rhythmLow[1]);
+    synthDevice.scheduleEvent(swingRhythmListLow);
+    lowStepSeqLength.value = synthValues.lowStepSeqLength;
 
-  straightRhythmListMid = new MessageEvent(TimeNow, 'in3', synthValues.rhythmMid[0]);
-  synthDevice.scheduleEvent(straightRhythmListMid);
-  swingRhythmListMid = new MessageEvent(TimeNow, 'in4', synthValues.rhythmMid[1]);
-  synthDevice.scheduleEvent(swingRhythmListMid);
-  midStepSeqLength.value = synthValues.midStepSeqLength;
+    straightRhythmListMid = new MessageEvent(TimeNow, 'in3', synthValues.rhythmMid[0]);
+    synthDevice.scheduleEvent(straightRhythmListMid);
+    swingRhythmListMid = new MessageEvent(TimeNow, 'in4', synthValues.rhythmMid[1]);
+    synthDevice.scheduleEvent(swingRhythmListMid);
+    midStepSeqLength.value = synthValues.midStepSeqLength;
 
-  straightRhythmListHigh = new MessageEvent(TimeNow, 'in5', synthValues.rhythmHigh[0]);
-  synthDevice.scheduleEvent(straightRhythmListHigh);
-  swingRhythmListHigh = new MessageEvent(TimeNow, 'in6', synthValues.rhythmHigh[1]);
-  synthDevice.scheduleEvent(swingRhythmListHigh);
-  highStepSeqLength.value = synthValues.highStepSeqLength;
+    straightRhythmListHigh = new MessageEvent(TimeNow, 'in5', synthValues.rhythmHigh[0]);
+    synthDevice.scheduleEvent(straightRhythmListHigh);
+    swingRhythmListHigh = new MessageEvent(TimeNow, 'in6', synthValues.rhythmHigh[1]);
+    synthDevice.scheduleEvent(swingRhythmListHigh);
+    highStepSeqLength.value = synthValues.highStepSeqLength;
+  }
 }
 function voiceSet(voice) {
   if (voice === 0) {
@@ -707,10 +623,13 @@ function quickClickGreen() {
     infoPanelUI.delay.funcWDM(delayValues.wetDryMix);
     infoPanelUI.vibrato.funcR(synthValues.vibratoRate);
     infoPanelUI.vibrato.funcD(synthValues.vibratoDepth);
-    feedback.value = synthValues.feedback;
-    wetDryMix.value = synthValues.wetDryMix;
-    vibratoRate.value = synthValues.vibratoRate;
-    vibratoDepth.value = synthValues.vibratoDepth;
+    if (synthDevice) {
+      feedback.value = synthValues.feedback;
+      wetDryMix.value = synthValues.wetDryMix;
+      vibratoRate.value = synthValues.vibratoRate;
+      vibratoDepth.value = synthValues.vibratoDepth;
+    }
+
   }
 }
 function controllerFeedback() {
@@ -770,13 +689,16 @@ function quickClickBlue(scale) {
     synthValues.harmonyListLow = harmonyValues[0][0];
     synthValues.harmonyListMid = harmonyValues[0][1];
     synthValues.harmonyListHigh = harmonyValues[0][2];
-    noteIndexMax.value = harmonyValues[1];
-    harmonyLow = new MessageEvent(TimeNow, 'in7', synthValues.harmonyListLow);
-    synthDevice.scheduleEvent(harmonyLow);
-    harmonyMid = new MessageEvent(TimeNow, 'in8', synthValues.harmonyListMid);
-    synthDevice.scheduleEvent(harmonyMid);
-    harmonyHigh = new MessageEvent(TimeNow, 'in9', synthValues.harmonyListHigh);
-    synthDevice.scheduleEvent(harmonyHigh);
+    if (synthDevice) {
+      noteIndexMax.value = harmonyValues[1];
+      harmonyLow = new MessageEvent(TimeNow, 'in7', synthValues.harmonyListLow);
+      synthDevice.scheduleEvent(harmonyLow);
+      harmonyMid = new MessageEvent(TimeNow, 'in8', synthValues.harmonyListMid);
+      synthDevice.scheduleEvent(harmonyMid);
+      harmonyHigh = new MessageEvent(TimeNow, 'in9', synthValues.harmonyListHigh);
+      synthDevice.scheduleEvent(harmonyHigh);
+    }
+
   }
 }
 
