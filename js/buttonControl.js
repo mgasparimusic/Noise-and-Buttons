@@ -37,13 +37,15 @@ class Button {
 
     //Sets up the mouse and touch screen controls for the 4 buttons
     this.keyAndMouseList.forEach((i) => {
-      i[0].addEventListener('pointerdown', function() {
+      i[0].addEventListener('pointerdown', (event) => {
+        event.target.disabled = true;
         changeImage(i[1]);
         i[2] = setTimeout(() => {
           i[3] = setInterval(i[4], i[5]);
         }, 500);
       })
       i[0].addEventListener('pointerup', (event) => {
+        event.target.disabled = false;
         clearTimeout(i[2]);
         clearInterval(i[3]);
         if (i[1] === 'red') {
