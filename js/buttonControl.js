@@ -24,22 +24,22 @@ class Button {
     this.bluClick = bluClickFunc;
   }
 
-  addKeyAndMouse() {
-    //Switch image between on and off button images for UI
-    function changeImage(color) {
-      const buttonImage = document.getElementById(`${color}-button-image`);
-      if (buttonImage.src.endsWith('off.png')) {
-        buttonImage.src = `images/nab_button_${color}_on.png`;
-      } else {
-        buttonImage.src = `images/nab_button_${color}_off.png`;
-      }
-    }
+  //Switch image between on and off button images for UI
+  changeImageOn(color) {
+    const buttonImage = document.getElementById(`${color}-button-image`);
+    buttonImage.src = `images/nab_button_${color}_on.png`;
+  }
+  changeImageOff(color) {
+    const buttonImage = document.getElementById(`${color}-button-image`);
+    buttonImage.src = `images/nab_button_${color}_off.png`;
+  }
 
+  addKeyAndMouse() {
     //Sets up the mouse and touch screen controls for the 4 buttons
     this.keyAndMouseList.forEach((i) => {
       i[0].addEventListener('pointerdown', (event) => {
         event.target.disabled = true;
-        changeImage(i[1]);
+        this.changeImageOn(i[1]);
         i[2] = setTimeout(() => {
           i[3] = setInterval(i[4], i[5]);
         }, 500);
@@ -57,7 +57,7 @@ class Button {
         } else if (i[1] === 'blue') {
           this.bluClick();
         }
-        changeImage(i[1]);
+        this.changeImageOff(i[1]);
       })
     });
 
@@ -65,22 +65,22 @@ class Button {
     document.addEventListener('keydown', (event) => {
       if (!event.repeat) {
         if (event.key === 49 || event.keyCode === 49) {
-          changeImage('red');
+          this.changeImageOn('red');
           this.timeouts.redTimeout = setTimeout(() => {
             this.keyAndMouseList[0][3] = setInterval(this.keyAndMouseList[0][4], this.keyAndMouseList[0][5]);
           }, 500);
         } else if (event.key === 50 || event.keyCode === 50) {
-          changeImage('yellow');
+          this.changeImageOn('yellow');
           this.timeouts.yellowTimeout = setTimeout(() => {
             this.keyAndMouseList[1][3] = setInterval(this.keyAndMouseList[1][4], this.keyAndMouseList[1][5]);
           }, 500);
         } else if (event.key === 51 || event.keyCode === 51) {
-          changeImage('green');
+          this.changeImageOn('green');
           this.timeouts.greenTimeout = setTimeout(() => {
             this.keyAndMouseList[2][3] = setInterval(this.keyAndMouseList[2][4], this.keyAndMouseList[2][5]);
           }, 500);
         } else if (event.key === 52 || event.keyCode === 52) {
-          changeImage('blue');
+          this.changeImageOn('blue');
           this.timeouts.blueTimeout = setInterval(() => {
             this.keyAndMouseList[3][4]();
           }, 500);
@@ -93,21 +93,21 @@ class Button {
         clearTimeout(this.timeouts.redTimeout);
         this.redClick(event);
         clearInterval(this.keyAndMouseList[0][3]);
-        changeImage('red');
+        this.changeImageOff('red');
       } else if (event.key === 50 || event.keyCode === 50) {
         clearTimeout(this.timeouts.yellowTimeout);
         this.yelClick();
         clearInterval(this.keyAndMouseList[1][3]);
-        changeImage('yellow');
+        this.changeImageOff('yellow');
       } else if (event.key === 51 || event.keyCode === 51) {
         clearTimeout(this.timeouts.greenTimeout);
         this.greClick();
         clearInterval(this.keyAndMouseList[2][3]);
-        changeImage('green');
+        this.changeImageOff('green');
       } else if (event.key === 52 || event.keyCode === 52) {
         clearTimeout(this.timeouts.blueTimeout);
         this.bluClick();
-        changeImage('blue');
+        this.changeImageOff('blue');
       }
     });
   }
@@ -116,6 +116,7 @@ class Button {
     this.keyAndMouseList.forEach((i) => {
       clearTimeout(i[2]);
       clearInterval(i[3]);
+      this.changeImageOff(i[1]);
     });
   }
 }
