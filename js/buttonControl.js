@@ -22,9 +22,56 @@ class Button {
     this.yelClick = yelClickFunc;
     this.greClick = greClickFunc;
     this.bluClick = bluClickFunc;
+
+    this.tpCashe = new Array();
   }
 
   //Switch image between on and off button images for UI
+
+  log(name, ev) {
+    var o = document.getElementsByTagName("output")[0];
+    var s =
+      name +
+      ": touches = " +
+      ev.touches.length +
+      " ; targetTouches = " +
+      ev.targetTouches.length +
+      " ; changedTouches = " +
+      ev.changedTouches.length;
+    o.innerHTML += s + " <br>";
+    s = "";
+    for (var i = 0; i < ev.targetTouches.length; i++) {
+      s += "... id = " + ev.targetTouches[i].identifier + " <br>";
+    }
+    o.innerHTML += s;
+  }
+
+  startHandler(ev) {
+    // If the user makes simultaneious touches, the browser will fire a
+    // separate touchstart event for each touch point. Thus if there are
+    // three simultaneous touches, the first touchstart event will have
+    // targetTouches length of one, the second event will have a length
+    // of two, and so on.
+    ev.preventDefault();
+    // Cache the touch points for later processing of 2-touch pinch/zoom
+    if (ev.targetTouches.length == 2) {
+      for (var i = 0; i < ev.targetTouches.length; i++) {
+        tpCache.push(ev.targetTouches[i]);
+      }
+    }
+    log("touchStart", ev);
+  }
+
+  setHandlers(name) {
+    // Install event handlers for the given element
+    var el = document.getElementById(name);
+    el.ontouchstart = startHandler;
+    el.ontouchmove = moveHandler;
+    // Use same handler for touchcancel and touchend
+    el.ontouchcancel = endHandler;
+    el.ontouchend = endHandler;
+  }
+
   changeImageOn(color) {
     const buttonImage = document.getElementById(`${color}-button-image`);
     buttonImage.src = `images/nab_button_${color}_on.png`;
@@ -37,6 +84,15 @@ class Button {
   addKeyAndMouse() {
     //Sets up the mouse and touch screen controls for the 4 buttons
     this.keyAndMouseList.forEach((i) => {
+      i[0].addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+      }, { passive: false });
+      i[0].addEventListener('gesturechange', function (e) {
+        e.preventDefault();
+      }, { passive: false });
+      i[0].addEventListener('gestureend', function (e) {
+        e.preventDefault();
+      }, { passive: false });
       i[0].addEventListener('pointerdown', (event) => {
         event.target.disabled = true;
         this.changeImageOn(i[1]);
