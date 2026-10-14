@@ -286,7 +286,7 @@ function setup() {
   document.body.onload = () => {
       audio.resume();
   }
-  onOffButton.addEventListener('click', function() {
+  onOffButton.addEventListener('pointerdown', function() {
     onOffSynth();
   });
   interfaceSelection.addEventListener('change', function() {
