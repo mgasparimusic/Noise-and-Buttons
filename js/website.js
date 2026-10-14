@@ -283,10 +283,10 @@ function setup() {
   loadRNBO(); //Sets up RNBO patch connection ->
 
   //Audio will be active once body of HTML is clicked.
-  document.body.onload = () => {
+  document.body.onclick = () => {
       audio.resume();
   }
-  onOffButton.addEventListener('pointerdown', function() {
+  onOffButton.addEventListener('click', function() {
     onOffSynth();
   });
   interfaceSelection.addEventListener('change', function() {
