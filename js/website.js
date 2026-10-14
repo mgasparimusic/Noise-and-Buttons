@@ -32,8 +32,10 @@ let gain;
 let synthDevice;
 
 //Buttons and Elements in HTML
-const recordingDialog = document.getElementById('recording-dialog') //Dialog that will show current recording in HTML
-const onOffDescription = document.getElementById('js-start-stop-description') //On/Off Description Text in HTML
+const welcomeDialog = document.getElementById('welcome-dialog');
+welcomeDialog.showModal();
+const recordingDialog = document.getElementById('recording-dialog'); //Dialog that will show current recording in HTML
+const onOffDescription = document.getElementById('js-start-stop-description'); //On/Off Description Text in HTML
 const onOffButton = document.getElementById('js-on-off-button'); //On/Off Button in HTML
 const interfaceSelection = document.getElementById('interfaces'); //"Select Interface" Drop Down in HTML
 const mainVolumeSlider = document.getElementById('js-main-volume'); //Volume Slider in HTML
@@ -358,9 +360,10 @@ async function loadRNBO() {
   synthDevice.node.connect(gain);
   gain.connect(audio.destination);
 
-  gain.gain.value = 0;
+  gain.gain.value = 1;
 
   setParameters(synthDevice);
+  kickVolume.value = 0.4;
   onOffSignal.value = 0;
   lowVoice.value = 1;
   midVoice.value = 1;
