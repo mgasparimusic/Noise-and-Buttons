@@ -2,9 +2,26 @@
 //Michael Gaspari
 //Noise and Buttons
 
+//Data Bounce Function
+function dataBounce(peak, value, inc, min, max) {
+  if (!peak && value < max) {
+    value += inc;
+    if (value >= max) {
+      peak = true;
+    }
+  } else if (peak && value > min) {
+    value -= inc;
+    if (value <= min) {
+      peak = false;
+    }
+  }
+  return [value, peak];
+}
+
 //Tempo Direction–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*|
 let tempo = 60;
 let currentTempo = 60;
+let tempoPeak = false;
 let averageTempo = [];
 
 function tempoDirection(tDiff) {
@@ -40,8 +57,12 @@ function tempoPerciseControl(direction) {
       tempo = 20;
     }
     tempo--;
+  } else if (!direction) {
+    const tempoBounce = dataBounce(tempoPeak, currentTempo, 1, 20, 300);
+    currentTempo = tempoBounce[0];
+    tempoPeak = tempoBounce[1];
+    tempo = currentTempo;
   }
-  currentTempo = tempo;
   return tempo;
 }
 

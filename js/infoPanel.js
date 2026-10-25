@@ -4,7 +4,7 @@
 
 export const infoPanelUI = {
   tempo: { //Tempo Visual –––––––––––––––––––––––––––––––––––––––––––––––––––-–––––––––*|
-    visual: document.getElementById('red-press-info'),
+    visual: document.getElementById('tempo-bpm'),
     func: function(t) {
       infoPanelUI.tempo.visual.innerHTML = `${t} bpm`;
     }

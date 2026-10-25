@@ -19,6 +19,11 @@
   font-size: 40px;
 }
 
+#tempo-bpm {
+  margin-top: 5;
+  margin-bottom: 5;
+}
+
 #tempo-direction {
   width: 40%;
 }

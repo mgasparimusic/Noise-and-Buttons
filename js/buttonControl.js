@@ -99,7 +99,7 @@ class Button {
         i[2] = setTimeout(() => {
           i[3] = setInterval(i[4], i[5]);
         }, 500);
-      })
+      });
       i[0].addEventListener('pointerup', (event) => {
         event.target.disabled = false;
         clearTimeout(i[2]);
@@ -115,6 +115,9 @@ class Button {
         }
         this.changeImageOff(i[1]);
       })
+      i[0].addEventListener('dblclick', (event) => {
+        console.log('double click');
+      });
     });
 
     //Sets up the keyboard shortcut controls for the 4 buttons

@@ -71,11 +71,10 @@ let averageTempo = [];
 
 function tempoChooser(tDiff) {
   function getRandomTempo() {
-    let rnd = getRandomNumber(0, 4);
-    let tempo = tempoList[rnd];
+    let tempo = getRandomNumber(0, 158) + 50;
     if (tempo === 50) {
       tempoPeak = false;
-    } else if (tempo === 140) {
+    } else if (tempo === 208) {
       tempoPeak = true;
     }
     return tempo;
@@ -104,8 +103,8 @@ function tempoChooser(tDiff) {
 //Tempo Percise Control–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*|
 function tempoPerciseControl(direction) {
   if (direction && direction === 'up') {
-    if (tempo >= 140) {
-      tempo = 140;
+    if (tempo >= 208) {
+      tempo = 208;
     }
     tempo++;
   } else if ( direction && direction === 'down') {
@@ -114,7 +113,7 @@ function tempoPerciseControl(direction) {
     }
     tempo--;
   } else if (!direction) {
-    const tempoBounce = dataBounce(tempoPeak, currentTempo, 1, 50, 140);
+    const tempoBounce = dataBounce(tempoPeak, currentTempo, 1, 50, 208);
     currentTempo = tempoBounce[0];
     tempoPeak = tempoBounce[1];
     tempo = currentTempo;

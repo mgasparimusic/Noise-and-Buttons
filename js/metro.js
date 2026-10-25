@@ -2,9 +2,10 @@
 //Michael Gaspari
 //Noise and Buttons
 
-import { tempoDirection, tempoPerciseControl} from './functionsMetro.js';
+import { tempoDirection, tempoPerciseControl } from './functionsMetro.js';
 //import { infoPanelUI } from './infoPanel.js';
 import { joysticks, controllerPanelNintendo } from './controllersPanel.js';
+import { Button } from './buttonControl.js';
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -15,6 +16,8 @@ let gain;
 let metroDevice;
 
 //Buttons and Elements in HTML
+const welcomeDialog = document.getElementById('welcome-dialog');
+welcomeDialog.showModal();
 const recordingDialog = document.getElementById('recording-dialog') //Dialog that will show current recording in HTML
 const onOffDescription = document.getElementById('js-start-stop-description') //On/Off Description Text in HTML
 const onOffButton = document.getElementById('js-on-off-button'); //On/Off Button in HTML
@@ -361,104 +364,14 @@ function setParameters(metroDevice) {
 setup();
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
-const timeouts = {
-  redTimeout: null, 
-  yellowTimeout: null,
-  greenTimeout: null,
-  blueTimeout: null
-};
-const keyAndMouseList = [
-  [redButton, 'red', timeouts.redTimeout, tempoLine, clickAndHoldRed, 100, 49],
-  [yellowButton, 'yellow', timeouts.yellowTimeout, rhythmLine, clickAndHoldYellow, 200, 50],
-  [greenButton, 'green', timeouts.greenTimeout, timbreLine, clickAndHoldGreen, 50, 51],
-  [blueButton, 'blue', timeouts.blueTimeout, voiceLine, clickAndHoldBlue, 500, 52]
-]; //button HTML, color, timeout, line, func, interval, key
 
-function addKeyAndMouse(list) {
-  list.forEach((i) => {
-    i[0].addEventListener('mousedown', function() {
-      changeImage(i[1]);
-      i[2] = setTimeout(() => {
-        i[3] = setInterval(i[4](direction), i[5]);
-      }, 500);
-    })
-    i[0].addEventListener('mouseup', function(event) {
-      clearTimeout(i[2]);
-      clearInterval(i[3]);
-      if (i[1] === 'red') {
-        quickClickRed(event);
-      } else if (i[1] === 'yellow') {
-        quickClickYellow();
-      } else if (i[1] === 'green') {
-        quickClickGreen();
-      } else if (i[1] === 'blue') {
-        quickClickBlue();
-      }
-      changeImage(i[1]);
-    })
-  });
+const allButtons = new Button(redButton, yellowButton, greenButton, blueButton, tempoLine, rhythmLine, timbreLine, voiceLine, clickAndHoldRed, clickAndHoldYellow, clickAndHoldGreen, clickAndHoldBlue, 100, 200, 50, 500, 49, 50, 51, 52, quickClickRed, quickClickYellow, quickClickGreen, quickClickBlue);
 
-  //Button Key Commands
-  document.addEventListener('keydown', function(event) {
-    if (!event.repeat) {
-      if (event.key === 49 || event.keyCode === 49) {
-        changeImage('red');
-        timeouts.redTimeout = setTimeout(() => {
-          tempoLine = setInterval(clickAndHoldRed(direction), 100);
-        }, 500);
-      } else if (event.key === 50 || event.keyCode === 50) {
-        changeImage('yellow');
-        timeouts.yellowTimeout = setTimeout(() => {
-          rhythmLine = setInterval(clickAndHoldYellow, 200);
-        }, 500);
-      } else if (event.key === 51 || event.keyCode === 51) {
-        changeImage('green');
-        timeouts.greenTimeout = setTimeout(() => {
-          timbreLine = setInterval(clickAndHoldGreen, 50);
-        }, 500);
-      } else if (event.key === 52 || event.keyCode === 52) {
-        changeImage('blue');
-        timeouts.blueTimeout = setInterval(() => {
-          clickAndHoldBlue();
-        }, 500);
-      }
-    }
-  });
-  document.addEventListener('keyup', function(event) {
-    if (event.key === 49 || event.keyCode === 49) {
-      clearTimeout(timeouts.redTimeout);
-      quickClickRed(event);
-      clearInterval(tempoLine);
-      changeImage('red');
-    } else if (event.key === 50 || event.keyCode === 50) {
-      clearTimeout(timeouts.yellowTimeout);
-      quickClickYellow();
-      clearInterval(rhythmLine);
-      changeImage('yellow');
-    } else if (event.key === 51 || event.keyCode === 51) {
-      clearTimeout(timeouts.greenTimeout);
-      quickClickGreen();
-      clearInterval(timbreLine);
-      changeImage('green');
-    } else if (event.key === 52 || event.keyCode === 52) {
-      clearTimeout(timeouts.blueTimeout);
-      quickClickBlue();
-      changeImage('blue');
-    }
-  });
+allButtons.addKeyAndMouse();
 
-  function changeImage(color) {
-    const buttonImage = document.getElementById(`${color}-button-image`);
-    if (buttonImage.src.endsWith('off.png')) {
-      buttonImage.src = `images/nab_button_${color}_on.png`;
-    } else {
-      buttonImage.src = `images/nab_button_${color}_off.png`;
-    }
-  }
-}
-
-addKeyAndMouse(keyAndMouseList);
-
+document.addEventListener('scroll', () => {
+  allButtons.clearAllIntervals();
+});
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -490,9 +403,13 @@ function quickClickRed(event) {
 //Red Click and Hold
 function clickAndHoldRed(direction) {
   redHolding = true;
-  synthValues.tempo = tempoPerciseControl(direction);
-  tempo.value = synthValues.tempo;
+  if (direction) {
+    synthValues.tempo = tempoPerciseControl(direction);
+  } else {
+    synthValues.tempo = tempoPerciseControl();
+  }
   console.log(synthValues.tempo);
+  tempo.value = synthValues.tempo;
 }
 
 //Yellow Quick Click

@@ -470,7 +470,7 @@ setup();
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-const allButtons = new Button(redButton, yellowButton, greenButton, blueButton, tempoLine, rhythmLine, timbreLine, voiceLine, clickAndHoldRed, clickAndHoldYellow, clickAndHoldGreen, clickAndHoldBlue, 100, 200, 50, 500, 49, 50, 51, 52, quickClickRed, quickClickYellow, quickClickGreen, quickClickBlue);
+const allButtons = new Button(redButton, yellowButton, greenButton, blueButton, tempoLine, rhythmLine, timbreLine, voiceLine, clickAndHoldRed, clickAndHoldYellow, clickAndHoldGreen, clickAndHoldBlue, 75, 200, 50, 500, 49, 50, 51, 52, quickClickRed, quickClickYellow, quickClickGreen, quickClickBlue);
 
 allButtons.addKeyAndMouse();
 
@@ -517,7 +517,7 @@ function clickAndHoldRed(direction) {
     synthValues.tempo = tempoPerciseControl();
     if (synthValues.tempo === 50) {
       infoPanelUI.tempoDirection.func('up');
-    } else if (synthValues.tempo === 140) {
+    } else if (synthValues.tempo === 208) {
       infoPanelUI.tempoDirection.func('down');
     }
   }
