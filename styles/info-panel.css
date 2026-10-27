@@ -24,6 +24,28 @@
   margin-bottom: 5;
 }
 
+#tempo-marks {
+  display: block;
+}
+
+#close-tempo-marks {
+  display: none;
+  height: 46px;
+}
+
+#close-tempo-marks-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+#js-tempo-marks {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-right: 10px;
+}
+
 #tempo-direction {
   width: 40%;
 }

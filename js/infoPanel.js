@@ -9,6 +9,30 @@ export const infoPanelUI = {
       infoPanelUI.tempo.visual.innerHTML = `${t} bpm`;
     }
   },
+  tempoMarks: {
+    visual: document.getElementById('js-tempo-marks'),
+    func: function(t) {
+        if (t <= 60) {
+          infoPanelUI.tempoMarks.visual.innerHTML = 'Largo';
+        } else if (t > 60 && t <= 66) {
+          infoPanelUI.tempoMarks.visual.innerHTML = 'Larghetto';
+        } else if (t > 66 && t <= 76) {
+          infoPanelUI.tempoMarks.visual.innerHTML = 'Adagio';
+        } else if (t > 76 && t <= 108) {
+          infoPanelUI.tempoMarks.visual.innerHTML = 'Andante';
+        } else if (t > 108 && t <= 120) {
+          infoPanelUI.tempoMarks.visual.innerHTML = 'Allegretto';
+        } else if (t > 120 && t <= 168) {
+          infoPanelUI.tempoMarks.visual.innerHTML = 'Allegro';
+        } else if (t > 168 && t <= 176) {
+          infoPanelUI.tempoMarks.visual.innerHTML = 'Vivace';
+        } else if (t > 176 && t <= 200) {
+          infoPanelUI.tempoMarks.visual.innerHTML = 'Presto';
+        } else {
+          infoPanelUI.tempoMarks.visual.innerHTML = 'Prestissimo';
+        }
+      }
+  },
   tempoDirection: { //Tempo Direction Visual –––––––––––––––––––––––––––––––––––––––––––––––––––-–––––––––*|
     visual: document.getElementById('red-press-hold-info'),
     func: function(direction) {

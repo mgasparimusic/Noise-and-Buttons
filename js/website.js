@@ -47,6 +47,9 @@ const redButton = document.getElementById('red-button'); //Red Button in HTML
 const yellowButton = document.getElementById('yellow-button'); //Yellow Button in HTML
 const greenButton = document.getElementById('green-button'); //Green Button in HTML
 const blueButton = document.getElementById('blue-button'); //Blue Button in HTML
+const tempoMarks = document.getElementById('tempo-marks'); //Red button tempo marks toggle
+const closeTempoMarks = document.getElementById('close-tempo-marks'); //Red button close tempo marks div (contains tempo marks info)
+const hideTempoMarks = document.getElementById('js-hide-tempo-marks'); //Close Tempo Marks hide button
 const scaleType = document.getElementById('scales'); //Blue button Select Style dropdown
 
 //Data Line Variables
@@ -331,6 +334,14 @@ function setup() {
   kickVolumeSlider.addEventListener('input', function() {
     adjustKickVolume(kickVolume);
   });
+  tempoMarks.addEventListener('pointerdown', function() {
+    tempoMarks.style.display = "none";
+    closeTempoMarks.style.display = "block";
+  });
+  hideTempoMarks.addEventListener('pointerdown', function() {
+    tempoMarks.style.display = "block";
+    closeTempoMarks.style.display = "none";
+  });
   scaleType.addEventListener('change', function() {
     quickClickBlue();
   });
@@ -495,6 +506,7 @@ function quickClickRed(event) {
     }
     synthValues.tempo = tempoChooser(tDiff);
     infoPanelUI.tempo.func(synthValues.tempo);
+    infoPanelUI.tempoMarks.func(synthValues.tempo);
     if (synthValues.tempo === 50) {
       infoPanelUI.tempoDirection.func('up');
     } else if (synthValues.tempo === 140) {
@@ -504,6 +516,7 @@ function quickClickRed(event) {
       tempo.value = synthValues.tempo;
     }
   }
+
   return synthValues.tempo;
 }
 
@@ -522,6 +535,7 @@ function clickAndHoldRed(direction) {
     }
   }
   infoPanelUI.tempo.func(synthValues.tempo);
+  infoPanelUI.tempoMarks.func(synthValues.tempo);
   tempo.value = synthValues.tempo;
 }
 
