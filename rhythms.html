@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--rhythms.html-->
+<!--Michael Gaspari-->
+<!--Noise and Buttons-->
+<html>
+  <head>
+    <title>Rhythms | Noise and Buttons</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/website.css">
+    <link rel="stylesheet" href="styles/nav.css">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/play.css">
+    <link rel="stylesheet" href="styles/info-panel.css">
+    <link rel="stylesheet" href="styles/rhythm-blocks.css">
+    <style>
+      .selected-button {
+        fill: blue;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <ul>
+        <li id="app-title"><p>Noise and Buttons</p></li>
+        <li class="nav-links"><a href="index.html">Home</a></li>
+        <li class="nav-links"><a href="about.html">About</a></li>
+        <li class="nav-links"><a href="play.html">Play</a></li>
+        <li class="nav-links"><a href="learn.html">Learn</a></li>
+        <li class="nav-links"><a href="updates.html">Updates</a></li>
+      </ul>
+    </nav>
+    <main>
+      <section class="white-panel shadow">
+        <div class="main-controls">
+          <div class="main-controls-container">
+            <div class="menu-bar">
+              <h1 class="main-text-padding">Rhythms</h1>
+            </div>
+            <div class="control-bar">
+              <div>
+                <div class="label-text">Main Volume</div>
+                <div class="volume-slider">
+                  <input type="range" min="0" max="1" value="1" step="0.01" class="main-slider" id="js-main-volume">
+                </div>
+              </div>
+              <div>
+                <div class="label-text">Kick Volume</div>
+                <div class="kick-drum-volume-slider">
+                  <input type="range" min="0" max="0.7" value="0.4" step="0.01" class="main-slider" id="js-kick-volume">
+                </div>
+              </div>
+              <div>
+                <button id="recording-button" class="main-buttons">Record</button>
+              </div>
+              <div>4</div>
+            </div>
+          </div>
+          <div class="on-off">
+            <div>
+              <button id="js-on-off-button" class="main-buttons start-stop">Off</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <br>
+      <section id="wood-texture" class="white-panel shadow">
+        <div id="rhythm-blocks-container" class="buttons-container">
+          <rhythm id="quarter-block" class="quarter-block" draggable="true" ondragstart="dragstartHandler(event)">
+            <img src="images/nab_rhythm_quarter_note.png">
+          </rhythm>
+          <rhythm id="half-block" class="half-block" draggable="true" ondragstart="dragstartHandler(event)">
+            <img src="images/nab_rhythm_half_note.png">
+          </rhythm>
+          <rhythm id="whole-block" class="whole-block" draggable="true" ondragstart="dragstartHandler(event)">
+            <img src="images/nab_rhythm_whole_note.png">
+          </rhythm>
+          <rhythm id="quarter-rest-block" class="quarter-rest-block" draggable="true" ondragstart="dragstartHandler(event)">
+            
+          </rhythm>
+        </div>
+      </section>
+      <br>
+      <section class="white-panel shadow">
+        <div class="block-building-area">
+          <box id="box">
+            <rhythm id="blank-block-one" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+            </rhythm>
+            <rhythm id="blank-block-two" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+            </rhythm>
+            <rhythm id="blank-block-three" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+            </rhythm>
+            <rhythm id="blank-block-four" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+            </rhythm>
+          </box>
+        </div>
+      </section>
+    </main>
+
+    <!-- JS -->
+    <script type="text/javascript" src="https://cdn.cycling74.com/rnbo/latest/rnbo.min.js"></script>
+    <script type="module" src="js/website.js"></script>
+    <script>
+
+    const rhythmBlocksContainer = document.getElementById('rhythm-blocks-container');
+    let blockCopy;
+    function dragstartHandler(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+      let blockCopy = ev.target;
+    }
+
+    function dragoverHandler(ev) {
+      ev.preventDefault();
+      ev.target.style.borderColor = '#FFFC79';
+    }
+
+    function dropHandler(ev) {
+      const numbersText = ['one', 'two', 'three', 'four'];
+      const box = document.getElementById('box');
+      ev.preventDefault();
+      const data = ev.dataTransfer.getData("text");
+      const dataMoved = document.getElementById(data);
+      const rhythmBlocksContainer = document.getElementById('rhythm-blocks-container');
+      if (dataMoved.id === 'quarter-block' || dataMoved.id === 'quarter-rest-block') {
+        rhythmBlocksContainer.prepend(dataMoved.cloneNode(true));
+        dataMoved.style.width = '176px';
+        dataMoved.style.height = '176px';
+        ev.target.appendChild(dataMoved);
+      }
+      if (dataMoved.id === 'half-block') {
+        rhythmBlocksContainer.insertBefore(dataMoved.cloneNode(true), rhythmBlocksContainer.children[1]);
+        if (ev.target.id.includes('one')) {
+          box.style.gridTemplateColumns = '2fr 1fr 1fr';
+          dataMoved.style.width = '390px';
+          dataMoved.style.height = '176px';
+          ev.target.appendChild(dataMoved);
+        }
+        if (ev.target.id.includes('two')) {
+          box.style.gridTemplateColumns = '1fr 2fr 1fr';
+          dataMoved.style.width = '390px';
+          dataMoved.style.height = '176px';
+          ev.target.appendChild(dataMoved);
+        }
+        if (ev.target.id.includes('three')) {
+          box.style.gridTemplateColumns = '1fr 1fr 2fr';
+          dataMoved.style.width = '390px';
+          dataMoved.style.height = '176px';
+          ev.target.appendChild(dataMoved);
+        }
+      }
+      if (dataMoved.id === 'whole-block') {
+        rhythmBlocksContainer.insertBefore(dataMoved.cloneNode(true), rhythmBlocksContainer.children[2]);
+        if (ev.target.id.includes('one')) {
+          box.style.gridTemplateColumns = '4fr';
+          dataMoved.style.width = '780px';
+          dataMoved.style.height = '176px';
+          ev.target.appendChild(dataMoved);
+        } 
+      }
+      ev.target.style.borderColor = 'lightgrey';
+    }
+    </script>
+  </body>
+</html>

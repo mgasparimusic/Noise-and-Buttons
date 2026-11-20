@@ -1,1 +1,5 @@
 Noise and Buttons is an inclusive music education project that aims to make music education more accessible for neurodivergent students by integrating sensory-friendly hardware and software interfaces.  This is a sandbox styled application that uses four buttons to control a generative synthesizer.  The buttons are color-coded with red, yellow, green, and blue; and control four different aspects of the music being tempo, rhythm, timbre, and harmony.  Pressing the buttons will result in audible changes on the synthesizer and can amount to hours of exploration and millions of different musical sounds.
+
+Credits:
+Church Bell — Bb4 by bassimat -- https://freesound.org/s/857937/ -- License: Creative Commons 0
+Tibetan singing bowl 1.wav by itinerantmonk108 -- https://freesound.org/s/553049/ -- License: Creative Commons 0

@@ -1,14 +1,40 @@
+.main-controls {
+  display: flex;
+  flex-direction: row;
+}
+
+.main-controls-container {
+  flex: 80%;
+}
+
+.on-off {
+  flex: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-bar {
+  flex: 1
+}
+
+.control-bar {
+  display: flex;
+  flex-direction: row;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  div {
+    flex: 25%
+  }
+}
+
 .control-panel {
   display: flex;
   column-gap: 10px;
 }
 
 .app-controls {
-  background-color: white;
   text-align: center;
-  padding-left: 15px;
-  padding-right: 15px;
-  border-radius: 50px;
   flex: 1;
 }
 
@@ -29,6 +55,10 @@
   margin-block-start: 0px;
   margin-block-end: 0px;
   width: 50px;
+}
+
+.label-text {
+  font-weight: bold;
 }
 
 .main-slider {
@@ -75,20 +105,12 @@
 }
 
 .app-start-stop {
-  background-color: white;
   text-align: center;
-  padding-left: 15px;
-  padding-right: 15px;
-  border-radius: 50px;
   flex: 1;
 }
 
 .app-utilities {
-  background-color: white;
   text-align: center;
-  padding-left: 15px;
-  padding-right: 15px;
-  border-radius: 50px;
   flex: 1;
 }
 
@@ -115,10 +137,8 @@
 }
 
 .info-panel {
-  background-color: white;
   margin-top: 15px;
   margin-bottom: 15px;
-  border-radius: 50px;
   display: grid;
   grid-template-rows: 10% 90%;
   row-gap: 10px;

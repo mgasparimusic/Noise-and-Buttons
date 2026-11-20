@@ -35,6 +35,7 @@ let synthDevice;
 const welcomeDialog = document.getElementById('welcome-dialog');
 welcomeDialog.showModal();
 const recordingDialog = document.getElementById('recording-dialog'); //Dialog that will show current recording in HTML
+const rhythmBuilderDialog = document.getElementById('rhythm-builder-dialog'); //Dialog that will show rhythm builder for the Noise and Buttons app
 const onOffDescription = document.getElementById('js-start-stop-description'); //On/Off Description Text in HTML
 const onOffButton = document.getElementById('js-on-off-button'); //On/Off Button in HTML
 const interfaceSelection = document.getElementById('interfaces'); //"Select Interface" Drop Down in HTML
@@ -481,7 +482,7 @@ setup();
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-const allButtons = new Button(redButton, yellowButton, greenButton, blueButton, tempoLine, rhythmLine, timbreLine, voiceLine, clickAndHoldRed, clickAndHoldYellow, clickAndHoldGreen, clickAndHoldBlue, 75, 200, 50, 500, 49, 50, 51, 52, quickClickRed, quickClickYellow, quickClickGreen, quickClickBlue);
+const allButtons = new Button(redButton, yellowButton, greenButton, blueButton, tempoLine, rhythmLine, timbreLine, voiceLine, clickAndHoldRed, clickAndHoldYellow, clickAndHoldGreen, clickAndHoldBlue, 75, 200, 50, 500, 49, 50, 51, 52, quickClickRed, quickClickYellow, quickClickGreen, quickClickBlue, redDC, yellowDC, greenDC, blueDC);
 
 allButtons.addKeyAndMouse();
 
@@ -537,6 +538,10 @@ function clickAndHoldRed(direction) {
   infoPanelUI.tempo.func(synthValues.tempo);
   infoPanelUI.tempoMarks.func(synthValues.tempo);
   tempo.value = synthValues.tempo;
+}
+
+function redDC() {
+  console.log('red double click');
 }
 
 //Yellow Quick Click
@@ -626,6 +631,10 @@ function controllerDecay() {
   decayValue.value = synthValues.decayValue;
 }
 
+function yellowDC() {
+  rhythmBuilderDialog.showModal();
+}
+
 //Green Quick Click
 function quickClickGreen() {
   if (greenHolding) {
@@ -691,6 +700,10 @@ function controllerQ() {
   qValue.value = synthValues.qValue;
 }
 
+function greenDC() {
+  console.log('green double click');
+}
+
 //Blue Quick Click
 function quickClickBlue(scale) {
   if (blueHolding) {
@@ -737,6 +750,10 @@ function clickAndHoldBlue(down) {
   lowVoice.value = voices[0].lowVoice;
   midVoice.value = voices[0].middleVoice;
   highVoice.value = voices[0].highVoice;
+}
+
+function blueDC() {
+  console.log('blue double click');
 }
 
 /* ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */

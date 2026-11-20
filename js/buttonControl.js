@@ -5,7 +5,7 @@
 //Button Control
 
 class Button {
-  constructor(redButton, yellowButton, greenButton, blueButton, redLine, yellowLine, greenLine, blueLine, clickAndHoldRed, clickAndHoldYellow, clickAndHoldGreen, clickAndHoldBlue, redInt, yelInt, greInt, bluInt, redKey, yelKey, greKey, bluKey, redClickFunc, yelClickFunc, greClickFunc, bluClickFunc) {
+  constructor(redButton, yellowButton, greenButton, blueButton, redLine, yellowLine, greenLine, blueLine, clickAndHoldRed, clickAndHoldYellow, clickAndHoldGreen, clickAndHoldBlue, redInt, yelInt, greInt, bluInt, redKey, yelKey, greKey, bluKey, redClickFunc, yelClickFunc, greClickFunc, bluClickFunc, redDCFunc, yelDCFunc, greDCFunc, bluDCFunc) {
     this.timeouts = {
       redTimeout: null, 
       yellowTimeout: null,
@@ -22,6 +22,10 @@ class Button {
     this.yelClick = yelClickFunc;
     this.greClick = greClickFunc;
     this.bluClick = bluClickFunc;
+    this.redDCFunc = redDCFunc;
+    this.yelDCFunc = yelDCFunc;
+    this.greDCFunc = greDCFunc;
+    this.bluDCFunc = bluDCFunc;
 
     this.tpCashe = new Array();
   }
@@ -115,8 +119,17 @@ class Button {
         }
         this.changeImageOff(i[1]);
       })
-      i[0].addEventListener('dblclick', (event) => {
-        console.log('double click');
+      i[0].addEventListener('dblclick', () => {
+        if (i[1] === 'red') {
+          this.redDCFunc();
+        } else if (i[1] === 'yellow') {
+          this.yelDCFunc();
+        } else if (i[1] === 'green') {
+          this.greDCFunc();
+        } else if (i[1] === 'blue') {
+          this.bluDCFunc();
+        }
+        this.changeImageOff(i[1]);       
       });
     });
 

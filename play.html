@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="styles/play.css">
     <link rel="stylesheet" href="styles/info-panel.css">
     <link rel="stylesheet" href="styles/controllers.css">
+    <link rel="stylesheet" href="styles/rhythm-blocks.css">
   </head>
 
   <body>
@@ -39,9 +40,57 @@
           <button class="main-buttons">Close</button>
         </form>
       </dialog>
+      <dialog id="rhythm-builder-dialog">
+        <section id="wood-texture" class="white-panel shadow">
+          <div id="rhythm-blocks-container" class="buttons-container">
+            <rhythm id="quarter-block" class="quarter-block" draggable="true" ondragstart="dragstartHandler(event)">
+              <img src="images/nab_rhythm_quarter_note.png">
+            </rhythm>
+            <rhythm id="half-block" class="half-block" draggable="true" ondragstart="dragstartHandler(event)">
+              <img src="images/nab_rhythm_half_note.png">
+            </rhythm>
+            <rhythm id="whole-block" class="whole-block" draggable="true" ondragstart="dragstartHandler(event)">
+              <img src="images/nab_rhythm_whole_note.png">
+            </rhythm>
+            <rhythm id="quarter-rest-block" class="quarter-rest-block" draggable="true" ondragstart="dragstartHandler(event)">
+              
+            </rhythm>
+          </div>
+        </section>
+        <br>
+        <section class="white-panel shadow">
+          <div class="block-building-area">
+            <box id="box">
+              <rhythm id="blank-block-one" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+              </rhythm>
+              <rhythm id="blank-block-two" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+              </rhythm>
+              <rhythm id="blank-block-three" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+              </rhythm>
+              <rhythm id="blank-block-four" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+              </rhythm>
+            </box>
+          </div>
+        </section>
+        <br>
+        <div class="bottom-dialog">
+          <div>
+            <form method="dialog">
+              <button class="main-buttons">Close</button>
+            </form>
+          </div>
+          <div>
+            <button id="rhythm-reset" class="main-buttons" onclick="resetRhythms(event)">Reset</button>
+          </div>
+        </div>
+      </dialog>
       <!-- Control Panel -->
       <section class="control-panel">
-        <div class="app-controls shadow">
+        <div class="app-controls white-panel shadow">
           <ul class="controls-ul">
             <li class="h2-list"><h2 class="select-interface-text">Select Interface</h2></li>
             <li><div class="interface-dropdown">
@@ -66,14 +115,14 @@
             <li></li>
           </ul>
         </div>
-        <div class="app-start-stop shadow">
+        <div class="app-start-stop white-panel shadow">
           <ul class="start-stop-ul">
             <li class="h2-list"><h2 id="start-stop-text">Start/Stop</h2></li>
             <li><p class="general-description" id="js-start-stop-description">Press spacebar or click on/off button to start/stop.</p></li>
             <li><button id="js-on-off-button" class="main-buttons start-stop">Off</button></li>
           </ul>
         </div>
-        <div class="app-utilities shadow">
+        <div class="app-utilities white-panel shadow">
           <ul class="app-utilities-ul">
             <li class="h2-list"><h2 class="stopwatch-text">Stopwatch</h2></li>
             <li><div class="stopwatch-container">
@@ -87,7 +136,7 @@
         </div>
       </section>
       <!-- Info Panel -->
-      <section class="info-panel shadow">
+      <section class="info-panel white-panel shadow">
         <div class="button-numbers">
           <div style="text-align: center;">
             <label class="number number-red">Tempo</label><label class="number number-border number-red">1</label>
@@ -259,7 +308,6 @@
           </div>
         </div>
       </section>
-      <output></output>
     </main>
 
     <!-- JS -->
@@ -268,5 +316,84 @@
     <script type="module" src="js/website.js"></script>
     <script type="module" src="js/midiMessages.js"></script>
     <script type="module" src="js/stopwatch.js"></script>
+    <script>
+
+    function dragstartHandler(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function dragoverHandler(ev) {
+      ev.preventDefault();
+      ev.target.style.borderColor = '#FFFC79';
+    }
+
+    function dropHandler(ev) {
+      const numbersText = ['one', 'two', 'three', 'four'];
+      const box = document.getElementById('box');
+      ev.preventDefault();
+      const data = ev.dataTransfer.getData("text");
+      const dataMoved = document.getElementById(data);
+      const rhythmBlocksContainer = document.getElementById('rhythm-blocks-container');
+      if (dataMoved.id === 'quarter-block' || dataMoved.id === 'quarter-rest-block') {
+        rhythmBlocksContainer.prepend(dataMoved.cloneNode(true));
+        dataMoved.style.width = '176px';
+        dataMoved.style.height = '176px';
+        ev.target.appendChild(dataMoved);
+      }
+      if (dataMoved.id === 'half-block') {
+        rhythmBlocksContainer.insertBefore(dataMoved.cloneNode(true), rhythmBlocksContainer.children[1]);
+        if (ev.target.id.includes('one')) {
+          box.style.gridTemplateColumns = '2fr 1fr 1fr';
+          dataMoved.style.width = '390px';
+          dataMoved.style.height = '176px';
+          ev.target.appendChild(dataMoved);
+        }
+        if (ev.target.id.includes('two')) {
+          box.style.gridTemplateColumns = '1fr 2fr 1fr';
+          dataMoved.style.width = '390px';
+          dataMoved.style.height = '176px';
+          ev.target.appendChild(dataMoved);
+        }
+        if (ev.target.id.includes('three')) {
+          box.style.gridTemplateColumns = '1fr 1fr 2fr';
+          dataMoved.style.width = '390px';
+          dataMoved.style.height = '176px';
+          ev.target.appendChild(dataMoved);
+        }
+        const lastBox = document.getElementById('blank-block-four');
+        lastBox.remove();
+      }
+      if (dataMoved.id === 'whole-block') {
+        rhythmBlocksContainer.insertBefore(dataMoved.cloneNode(true), rhythmBlocksContainer.children[2]);
+        if (ev.target.id.includes('one')) {
+          box.style.gridTemplateColumns = '4fr';
+          dataMoved.style.width = '780px';
+          dataMoved.style.height = '176px';
+          ev.target.appendChild(dataMoved);
+        } 
+      }
+      ev.target.style.borderColor = 'lightgrey';
+    }
+
+    function resetRhythms(ev) {
+      if (ev) {
+        const box = document.getElementById('box');
+        box.style.gridTemplateColumns = '1fr 1fr 1fr 1fr';
+        box.innerHTML = 
+        `<rhythm id="blank-block-one" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+        </rhythm>
+        <rhythm id="blank-block-two" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+        </rhythm>
+        <rhythm id="blank-block-three" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+        </rhythm>
+        <rhythm id="blank-block-four" class="blank-block" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+
+        </rhythm>`;
+      }
+    }
+    </script>
   </body>
 </html>

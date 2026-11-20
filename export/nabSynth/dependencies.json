@@ -1,5 +1,9 @@
 [
   {
+    "id": "sleighBell",
+    "file": "media/Sleigh_Bell_Hit.wav"
+  },
+  {
     "id": "kick",
     "file": "media/MMG_Kick-11.wav"
   }

@@ -1,0 +1,72 @@
+rhythm {
+  margin: 2px;
+  border-width: 5px;
+  border-color: black;
+  display: flex;
+  justify-content: center;
+  img {
+    size: 100px;
+  }
+}
+
+.block-building-area {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#box {
+  flex: 100%;
+  background-color: #FF8D79;
+  height: 204px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.blank-block {
+  border-style: dashed;
+  border-color: lightgrey;
+}
+
+.blank-block:hover {
+  border-color: #FFFC79;
+}
+
+.quarter-block {
+  width: 96px;
+  height: 96px;
+  background-color: #FFFC79;
+  border-style: solid;
+}
+
+.half-block {
+  width: 196px;
+  height: 96px;
+  background-color: #FFFB00;
+  border-style: solid;
+}
+
+.whole-block {
+  width: 396px;
+  height: 96px;
+  background-color: #CCBB00;
+  border-style: solid;
+}
+
+.quarter-rest-block {
+  width: 96px;
+  height: 96px;
+  background-color: white;
+  border-style: dashed;
+}
+
+.block-building-area {
+  padding: 30px 10px 30px 10px;
+}
+
+.bottom-dialog {
+  display: flex;
+  div {
+    margin-right: 20px;
+  }
+}

@@ -30,6 +30,13 @@ img {
   -webkit-user-drag: none;
 }
 
+.white-panel {
+  background-color: white;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 50px;
+}
+
 .main-text-container {
   background-color: white;
   padding-top: 20px;
