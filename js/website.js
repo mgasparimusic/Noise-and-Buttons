@@ -279,7 +279,7 @@ function setup() {
     }
   };
   audio = audioContext.aCtx;
-  buffer = 'kick';
+  buffer = 'sleighBell';
   gain = audio.createGain();
   audioContext.streamNode = audio.createMediaStreamDestination();
   gain.connect(audioContext.streamNode);
@@ -362,7 +362,7 @@ async function loadRNBO() {
 
   synthDevice = await createDevice({ context: audio, patcher: synthPatcher });
 
-  const fileResponse = await fetch('export/nabSynth/media/MMG_Kick-11.wav');
+  const fileResponse = await fetch('export/nabSynth/media/Sleigh_Bell_Hit.wav');
   const arrayBuf = await fileResponse.arrayBuffer();
 
   const audioBuf = await audio.decodeAudioData(arrayBuf);
